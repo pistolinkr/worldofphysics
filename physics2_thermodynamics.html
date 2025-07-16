@@ -672,38 +672,51 @@
                 
                 let P, V, T, step, S;
                 
+                // 카르노 사이클의 4단계
                 if (phase < 0.25) {
-                    // 등온 팽창 (고온부)
+                    // 1단계: 등온 팽창 (고온부에서)
                     step = 'isothermal_expansion';
-                    const ratio = 1 + 3 * (phase * 4);
-                    V = 0.001 * ratio;
+                    const V1 = 0.001; // 초기 부피
+                    const V2 = 0.004; // 최종 부피
+                    const expansionRatio = V1 + (V2 - V1) * (phase * 4);
+                    V = expansionRatio;
                     T = this.hotTemp;
                     P = this.n * this.R * T / V;
-                    S = this.n * this.R * Math.log(ratio);
+                    S = this.n * this.R * Math.log(V / V1);
                 } else if (phase < 0.5) {
-                    // 단열 팽창
+                    // 2단계: 단열 팽창
                     step = 'adiabatic_expansion';
-                    const ratio = 4 + 2 * ((phase - 0.25) * 4);
-                    V = 0.001 * ratio;
-                    T = this.hotTemp * Math.pow(4 / ratio, 0.4);
+                    const V2 = 0.004; // 단열 팽창 시작 부피
+                    const V3 = 0.008; // 단열 팽창 끝 부피
+                    const expansionRatio = V2 + (V3 - V2) * ((phase - 0.25) * 4);
+                    V = expansionRatio;
+                    // 단열 과정: TV^(γ-1) = 상수, γ = 1.4 (이원자 기체)
+                    const gamma = 1.4;
+                    T = this.hotTemp * Math.pow(V2 / V, gamma - 1);
                     P = this.n * this.R * T / V;
-                    S = this.n * this.R * Math.log(4);
+                    S = this.n * this.R * Math.log(V2 / 0.001); // 엔트로피 변화 없음
                 } else if (phase < 0.75) {
-                    // 등온 압축 (저온부)
+                    // 3단계: 등온 압축 (저온부에서)
                     step = 'isothermal_compression';
-                    const ratio = 6 - 3 * ((phase - 0.5) * 4);
-                    V = 0.001 * ratio;
+                    const V3 = 0.008; // 등온 압축 시작 부피
+                    const V4 = 0.002; // 등온 압축 끝 부피
+                    const compressionRatio = V3 - (V3 - V4) * ((phase - 0.5) * 4);
+                    V = compressionRatio;
                     T = this.coldTemp;
                     P = this.n * this.R * T / V;
-                    S = this.n * this.R * Math.log(4) - this.n * this.R * Math.log(6 / ratio);
+                    S = this.n * this.R * Math.log(V2 / 0.001) - this.n * this.R * Math.log(V3 / V);
                 } else {
-                    // 단열 압축
+                    // 4단계: 단열 압축
                     step = 'adiabatic_compression';
-                    const ratio = 3 - 2 * ((phase - 0.75) * 4);
-                    V = 0.001 * ratio;
-                    T = this.coldTemp * Math.pow(3 / ratio, 0.4);
+                    const V4 = 0.002; // 단열 압축 시작 부피
+                    const V1 = 0.001; // 단열 압축 끝 부피
+                    const compressionRatio = V4 - (V4 - V1) * ((phase - 0.75) * 4);
+                    V = compressionRatio;
+                    // 단열 과정: TV^(γ-1) = 상수
+                    const gamma = 1.4;
+                    T = this.coldTemp * Math.pow(V4 / V, gamma - 1);
                     P = this.n * this.R * T / V;
-                    S = 0;
+                    S = 0; // 엔트로피 변화 없음
                 }
                 
                 return { P, V, T, step, S };
@@ -989,15 +1002,48 @@
                 // 축 레이블
                 this.ctx.fillStyle = 'white';
                 this.ctx.font = `${12 / this.zoom}px Arial`;
-                this.ctx.fillText('P (Pa)', 750, 370);
+                this.ctx.fillText('P (kPa)', 750, 370);
                 this.ctx.fillText('V (m³)', 30, 30);
                 
-                // 카르노 사이클 그리기
+                // 격자 추가
+                this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                this.ctx.lineWidth = 1 / this.zoom;
+                
+                // 수직 격자 (부피)
+                for (let i = 1; i <= 8; i++) {
+                    const x = 50 + (i * 0.001) * 100000;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, 50);
+                    this.ctx.lineTo(x, 350);
+                    this.ctx.stroke();
+                    
+                    // 부피 레이블
+                    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                    this.ctx.font = `${10 / this.zoom}px Arial`;
+                    this.ctx.fillText(`${(i * 0.001).toFixed(3)}`, x - 10, 365);
+                }
+                
+                // 수평 격자 (압력)
+                for (let i = 1; i <= 6; i++) {
+                    const y = 350 - (i * 200000) / 1000000 * 300;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(50, y);
+                    this.ctx.lineTo(750, y);
+                    this.ctx.stroke();
+                    
+                    // 압력 레이블
+                    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                    this.ctx.font = `${10 / this.zoom}px Arial`;
+                    this.ctx.fillText(`${(i * 200).toFixed(0)}`, 30, y + 3);
+                }
+                
+                // 카르노 사이클 그리기 (완전한 사이클)
                 this.ctx.strokeStyle = '#ffffff';
                 this.ctx.lineWidth = 3 / this.zoom;
                 this.ctx.beginPath();
                 
-                for (let t = 0; t <= 2 * Math.PI; t += 0.1) {
+                // 완전한 사이클을 그리기 위해 더 많은 점 사용
+                for (let t = 0; t <= 2 * Math.PI; t += 0.05) {
                     const cycleData = this.calculateCarnotCycle(t);
                     const x = 50 + (cycleData.V - 0.001) * 100000; // V 스케일
                     const y = 350 - (cycleData.P / 1000000) * 300; // P 스케일
@@ -1011,15 +1057,23 @@
                 
                 this.ctx.stroke();
                 
-                // 현재 상태점 표시
+                // 현재 상태점 표시 (더 큰 점으로)
                 const currentData = this.calculateCarnotCycle(this.time);
                 const currentX = 50 + (currentData.V - 0.001) * 100000;
                 const currentY = 350 - (currentData.P / 1000000) * 300;
                 
-                this.ctx.fillStyle = '#ffffff';
+                this.ctx.fillStyle = '#ff6b6b';
                 this.ctx.beginPath();
-                this.ctx.arc(currentX, currentY, 5 / this.zoom, 0, 2 * Math.PI);
+                this.ctx.arc(currentX, currentY, 8 / this.zoom, 0, 2 * Math.PI);
                 this.ctx.fill();
+                
+                // 현재 상태 정보를 그래프 위에 표시
+                this.ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                this.ctx.font = `${11 / this.zoom}px Arial`;
+                this.ctx.fillText(`온도: ${currentData.T.toFixed(0)} K`, currentX + 10, currentY - 15);
+                this.ctx.fillText(`압력: ${(currentData.P / 1000).toFixed(0)} kPa`, currentX + 10, currentY);
+                this.ctx.fillText(`부피: ${(currentData.V * 1000).toFixed(2)} L`, currentX + 10, currentY + 15);
+                this.ctx.fillText(`과정: ${currentData.step}`, currentX + 10, currentY + 30);
                 
                 this.ctx.restore();
             }
@@ -1058,11 +1112,27 @@
             
             drawWorkHeatInfo() {
                 this.ctx.save();
-                this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-                this.ctx.font = `${12 / this.zoom}px Arial`;
-                this.ctx.fillText(`총 일: ${this.totalWork.toFixed(2)} J`, 600, 20);
-                this.ctx.fillText(`흡수 열: ${this.totalHeatAbsorbed.toFixed(2)} J`, 600, 40);
-                this.ctx.fillText(`방출 열: ${this.totalHeatReleased.toFixed(2)} J`, 600, 60);
+                
+                // 배경 박스
+                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                this.ctx.fillRect(600, 10, 180, 80);
+                this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                this.ctx.lineWidth = 1 / this.zoom;
+                this.ctx.strokeRect(600, 10, 180, 80);
+                
+                // 텍스트
+                this.ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                this.ctx.font = `${11 / this.zoom}px Arial`;
+                this.ctx.fillText(`총 일: ${this.totalWork.toFixed(2)} J`, 610, 30);
+                this.ctx.fillText(`흡수 열: ${this.totalHeatAbsorbed.toFixed(2)} J`, 610, 50);
+                this.ctx.fillText(`방출 열: ${this.totalHeatReleased.toFixed(2)} J`, 610, 70);
+                
+                // 효율 계산 및 표시
+                const efficiency = this.totalHeatAbsorbed > 0 ? 
+                    ((this.totalWork / this.totalHeatAbsorbed) * 100) : 0;
+                this.ctx.fillStyle = efficiency > 0 ? 'rgba(0, 255, 0, 0.9)' : 'rgba(255, 255, 255, 0.9)';
+                this.ctx.fillText(`효율: ${efficiency.toFixed(1)}%`, 610, 85);
+                
                 this.ctx.restore();
             }
             
