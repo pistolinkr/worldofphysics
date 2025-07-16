@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>물리학2 - 파동 시뮬레이션</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #000000;
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #111111;
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid #333333;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .control-panel {
+            background: #222222;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #444444;
+        }
+        
+        .control-panel h3 {
+            margin-top: 0;
+            color: #ffffff;
+        }
+        
+        label {
+            display: block;
+            margin: 10px 0 5px 0;
+            font-weight: bold;
+        }
+        
+        input[type="range"], input[type="number"], select {
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            background: #333333;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        input[type="number"] {
+            width: calc(100% - 16px);
+        }
+        
+        button {
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: scale(1.05);
+        }
+        
+        .canvas-container {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #444444;
+            border-radius: 10px;
+            background: #000000;
+        }
+        
+        #waveCanvas {
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .zoom-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 10;
+        }
+        
+        .zoom-controls button {
+            display: block;
+            margin: 5px 0;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        
+        .data-panel {
+            background: #222222;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 1px solid #444444;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .data-item {
+            text-align: center;
+            padding: 10px;
+            background: #333333;
+            border-radius: 5px;
+        }
+        
+        .data-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ffffff;
+        }
+        
+        .data-label {
+            font-size: 0.9em;
+            color: #cccccc;
+        }
+        
+        .info-panel {
+            background: #222222;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 1px solid #444444;
+        }
+        
+        .info-panel h3 {
+            color: #ffffff;
+            margin-top: 0;
+        }
+        
+        .formula {
+            background: #333333;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .wave-type {
+            display: inline-block;
+            margin: 5px;
+            padding: 5px 10px;
+            background: #444444;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .wave-type.active {
+            background: #ffffff;
+            color: black;
+        }
+        
+        .interference-pattern {
+            position: relative;
+            height: 200px;
+            background: #333333;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 8px;
+            }
+            .controls {
+                grid-template-columns: 1fr !important;
+                gap: 10px;
+            }
+            .control-panel {
+                padding: 10px;
+                font-size: 0.95em;
+            }
+            .info-panel {
+                padding: 10px;
+                font-size: 0.95em;
+            }
+            .canvas-container {
+                margin: 10px 0;
+            }
+            #waveCanvas, #patternCanvas {
+                width: 100% !important;
+                height: auto !important;
+                max-width: 100vw;
+                min-width: 0;
+            }
+            button, input[type="range"], input[type="number"], select {
+                font-size: 1em;
+                padding: 8px 10px;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            .zoom-controls {
+                position: static;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌊 물리학2 - 파동 시뮬레이션 🌊</h1>
+        
+        <div class="controls">
+            <div class="control-panel">
+                <h3>📏 파동 기본 설정</h3>
+                <label>파동 유형:</label>
+                <div>
+                    <span class="wave-type active" onclick="setWaveType('transverse')">횡파</span>
+                    <span class="wave-type" onclick="setWaveType('longitudinal')">종파</span>
+                    <span class="wave-type" onclick="setWaveType('standing')">정상파</span>
+                </div>
+                
+                <label>진폭 (m):</label>
+                <input type="range" id="amplitudeSlider" min="10" max="100" value="50">
+                <input type="number" id="amplitudeInput" min="10" max="100" value="50">
+                
+                <label>주파수 (Hz):</label>
+                <input type="range" id="frequencySlider" min="0.1" max="5" step="0.1" value="1">
+                <input type="number" id="frequencyInput" min="0.1" max="5" step="0.1" value="1">
+                
+                <label>파장 (m):</label>
+                <input type="range" id="wavelengthSlider" min="50" max="400" value="200">
+                <input type="number" id="wavelengthInput" min="50" max="400" value="200">
+                
+                <label>매질 밀도 (kg/m³):</label>
+                <input type="range" id="densitySlider" min="1" max="10" step="0.1" value="1">
+                <input type="number" id="densityInput" min="1" max="10" step="0.1" value="1">
+            </div>
+            
+            <div class="control-panel">
+                <h3>🔀 간섭 설정</h3>
+                <label>파동 개수:</label>
+                <input type="range" id="waveCountSlider" min="1" max="5" value="2">
+                <input type="number" id="waveCountInput" min="1" max="5" value="2">
+                
+                <label>위상차 (π):</label>
+                <input type="range" id="phaseSlider" min="0" max="2" step="0.1" value="0">
+                <input type="number" id="phaseInput" min="0" max="2" step="0.1" value="0">
+                
+                <label>간섭 패턴:</label>
+                <select id="interferenceType">
+                    <option value="constructive">보강 간섭</option>
+                    <option value="destructive">상쇄 간섭</option>
+                    <option value="mixed">혼합 간섭</option>
+                </select>
+                
+                <button onclick="addWave()">➕ 파동 추가</button>
+                <button onclick="clearWaves()">🗑️ 모든 파동 제거</button>
+            </div>
+            
+            <div class="control-panel">
+                <h3>⚙️ 시뮬레이션 설정</h3>
+                <label>시뮬레이션 속도:</label>
+                <input type="range" id="speedSlider" min="0.1" max="3" step="0.1" value="1">
+                <input type="number" id="speedInput" min="0.1" max="3" step="0.1" value="1">
+                
+                <label>표시 옵션:</label>
+                <input type="checkbox" id="showAmplitude" checked> 진폭 표시<br>
+                <input type="checkbox" id="showWavelength" checked> 파장 표시<br>
+                <input type="checkbox" id="showInterference" checked> 간섭 패턴<br>
+                <input type="checkbox" id="showNodes" checked> 마디/배 표시<br>
+                <input type="checkbox" id="showParticles" checked> 입자 시스템<br>
+                <input type="checkbox" id="showEnergy" checked> 에너지 분포<br>
+                
+                <button onclick="resetSimulation()">🔄 시뮬레이션 재시작</button>
+                <button onclick="pauseResume()">⏸️ 일시정지/재생</button>
+            </div>
+        </div>
+        
+        <div class="canvas-container">
+            <div class="zoom-controls">
+                <button onclick="zoomIn()">🔍+</button>
+                <button onclick="zoomOut()">🔍-</button>
+                <button onclick="resetZoom()">🏠</button>
+            </div>
+            <canvas id="waveCanvas" width="800" height="400"></canvas>
+        </div>
+        
+        <div class="data-panel">
+            <div class="data-item">
+                <div class="data-value" id="waveSpeed">0</div>
+                <div class="data-label">파동 속도 (m/s)</div>
+            </div>
+            <div class="data-item">
+                <div class="data-value" id="waveEnergy">0</div>
+                <div class="data-label">총 에너지 (J)</div>
+            </div>
+            <div class="data-item">
+                <div class="data-value" id="maxAmplitude">0</div>
+                <div class="data-label">최대 진폭 (m)</div>
+            </div>
+            <div class="data-item">
+                <div class="data-value" id="interferenceIntensity">0</div>
+                <div class="data-label">간섭 강도</div>
+            </div>
+        </div>
+        
+        <div class="interference-pattern" id="interferencePattern">
+            <canvas id="patternCanvas" width="800" height="200"></canvas>
+        </div>
+        
+        <div class="info-panel">
+            <h3>📚 물리학 개념 설명</h3>
+            <div class="formula">
+                <strong>파동 속도:</strong> v = fλ (주파수 × 파장)
+            </div>
+            <div class="formula">
+                <strong>보강 간섭:</strong> 경로차 = nλ (n = 0, 1, 2, ...)
+            </div>
+            <div class="formula">
+                <strong>상쇄 간섭:</strong> 경로차 = (n + 1/2)λ (n = 0, 1, 2, ...)
+            </div>
+            <div class="formula">
+                <strong>파동 에너지:</strong> E = ½kA² (k: 탄성계수, A: 진폭)
+            </div>
+            <p><strong>🔴 빨간색:</strong> 파동, <strong>🟡 노란색:</strong> 간섭 패턴, <strong>🔵 파란색:</strong> 마디/배</p>
+            <p><strong>횡파:</strong> 매질의 진동이 파동의 진행 방향에 수직, <strong>종파:</strong> 매질의 진동이 파동의 진행 방향에 평행</p>
+            <p><strong>정상파:</strong> 같은 진폭과 주파수를 가진 두 파동이 반대 방향으로 진행할 때 발생</p>
+        </div>
+    </div>
+
+    <script>
+        class WaveSimulation {
+            constructor() {
+                this.canvas = document.getElementById('waveCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.patternCanvas = document.getElementById('patternCanvas');
+                this.patternCtx = this.patternCanvas.getContext('2d');
+                
+                this.waves = [];
+                this.particles = [];
+                this.time = 0;
+                this.waveType = 'transverse';
+                this.simulationSpeed = 1;
+                this.isRunning = true;
+                
+                // 줌 및 팬 설정
+                this.zoom = 1;
+                this.panX = 0;
+                this.panY = 0;
+                this.isDragging = false;
+                this.lastMouseX = 0;
+                this.lastMouseY = 0;
+                
+                // 물리 상수
+                this.density = 1;
+                this.elasticModulus = 1000;
+                
+                this.setupControls();
+                this.setupEventListeners();
+                this.addDefaultWaves();
+                this.createParticles();
+                this.animate();
+            }
+            
+            setupControls() {
+                // 진폭 설정
+                const amplitudeSlider = document.getElementById('amplitudeSlider');
+                const amplitudeInput = document.getElementById('amplitudeInput');
+                
+                amplitudeSlider.addEventListener('input', (e) => {
+                    amplitudeInput.value = e.target.value;
+                    this.updateWaveProperties();
+                });
+                
+                amplitudeInput.addEventListener('input', (e) => {
+                    amplitudeSlider.value = e.target.value;
+                    this.updateWaveProperties();
+                });
+                
+                // 주파수 설정
+                const frequencySlider = document.getElementById('frequencySlider');
+                const frequencyInput = document.getElementById('frequencyInput');
+                
+                frequencySlider.addEventListener('input', (e) => {
+                    frequencyInput.value = e.target.value;
+                    this.updateWaveProperties();
+                });
+                
+                frequencyInput.addEventListener('input', (e) => {
+                    frequencySlider.value = e.target.value;
+                    this.updateWaveProperties();
+                });
+                
+                // 파장 설정
+                const wavelengthSlider = document.getElementById('wavelengthSlider');
+                const wavelengthInput = document.getElementById('wavelengthInput');
+                
+                wavelengthSlider.addEventListener('input', (e) => {
+                    wavelengthInput.value = e.target.value;
+                    this.updateWaveProperties();
+                });
+                
+                wavelengthInput.addEventListener('input', (e) => {
+                    wavelengthSlider.value = e.target.value;
+                    this.updateWaveProperties();
+                });
+                
+                // 밀도 설정
+                const densitySlider = document.getElementById('densitySlider');
+                const densityInput = document.getElementById('densityInput');
+                
+                densitySlider.addEventListener('input', (e) => {
+                    densityInput.value = e.target.value;
+                    this.density = parseFloat(e.target.value);
+                });
+                
+                densityInput.addEventListener('input', (e) => {
+                    densitySlider.value = e.target.value;
+                    this.density = parseFloat(e.target.value);
+                });
+                
+                // 파동 개수 설정
+                const waveCountSlider = document.getElementById('waveCountSlider');
+                const waveCountInput = document.getElementById('waveCountInput');
+                
+                waveCountSlider.addEventListener('input', (e) => {
+                    waveCountInput.value = e.target.value;
+                    this.updateWaveCount();
+                });
+                
+                waveCountInput.addEventListener('input', (e) => {
+                    waveCountSlider.value = e.target.value;
+                    this.updateWaveCount();
+                });
+                
+                // 위상차 설정
+                const phaseSlider = document.getElementById('phaseSlider');
+                const phaseInput = document.getElementById('phaseInput');
+                
+                phaseSlider.addEventListener('input', (e) => {
+                    phaseInput.value = e.target.value;
+                    this.updateWaveProperties();
+                });
+                
+                phaseInput.addEventListener('input', (e) => {
+                    phaseSlider.value = e.target.value;
+                    this.updateWaveProperties();
+                });
+                
+                // 시뮬레이션 속도
+                const speedSlider = document.getElementById('speedSlider');
+                const speedInput = document.getElementById('speedInput');
+                
+                speedSlider.addEventListener('input', (e) => {
+                    speedInput.value = e.target.value;
+                    this.simulationSpeed = parseFloat(e.target.value);
+                });
+                
+                speedInput.addEventListener('input', (e) => {
+                    speedSlider.value = e.target.value;
+                    this.simulationSpeed = parseFloat(e.target.value);
+                });
+            }
+            
+            setupEventListeners() {
+                // 마우스 이벤트
+                this.canvas.addEventListener('mousedown', (e) => {
+                    this.isDragging = true;
+                    this.lastMouseX = e.clientX;
+                    this.lastMouseY = e.clientY;
+                });
+                
+                this.canvas.addEventListener('mousemove', (e) => {
+                    if (this.isDragging) {
+                        const deltaX = e.clientX - this.lastMouseX;
+                        const deltaY = e.clientY - this.lastMouseY;
+                        
+                        this.panX += deltaX / this.zoom;
+                        this.panY += deltaY / this.zoom;
+                        
+                        this.lastMouseX = e.clientX;
+                        this.lastMouseY = e.clientY;
+                    }
+                });
+                
+                this.canvas.addEventListener('mouseup', () => {
+                    this.isDragging = false;
+                });
+                
+                // 휠 줌
+                this.canvas.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
+                    this.zoom *= zoomFactor;
+                    this.zoom = Math.max(0.1, Math.min(5, this.zoom));
+                });
+                
+                // 터치 이벤트
+                this.canvas.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    if (e.touches.length === 1) {
+                        this.isDragging = true;
+                        this.lastMouseX = e.touches[0].clientX;
+                        this.lastMouseY = e.touches[0].clientY;
+                    }
+                });
+                
+                this.canvas.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                    if (this.isDragging && e.touches.length === 1) {
+                        const deltaX = e.touches[0].clientX - this.lastMouseX;
+                        const deltaY = e.touches[0].clientY - this.lastMouseY;
+                        
+                        this.panX += deltaX / this.zoom;
+                        this.panY += deltaY / this.zoom;
+                        
+                        this.lastMouseX = e.touches[0].clientX;
+                        this.lastMouseY = e.touches[0].clientY;
+                    }
+                });
+                
+                this.canvas.addEventListener('touchend', () => {
+                    this.isDragging = false;
+                });
+            }
+            
+            addDefaultWaves() {
+                // 기본 파동들 추가
+                this.addWave(100, 200, 1, 200, 0);
+                this.addWave(100, 200, 1, 200, Math.PI);
+            }
+            
+            addWave(amplitude, frequency, wavelength, phase = 0) {
+                this.waves.push({
+                    amplitude: amplitude,
+                    frequency: frequency,
+                    wavelength: wavelength,
+                    phase: phase,
+                    direction: 1 // 1: 오른쪽, -1: 왼쪽
+                });
+            }
+            
+            createParticles() {
+                this.particles = [];
+                for (let i = 0; i < 50; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: this.canvas.height / 2,
+                        vx: 0,
+                        vy: 0,
+                        life: 1,
+                        decay: 0.98
+                    });
+                }
+            }
+            
+            updateWaveProperties() {
+                const amplitude = parseFloat(document.getElementById('amplitudeInput').value);
+                const frequency = parseFloat(document.getElementById('frequencyInput').value);
+                const wavelength = parseFloat(document.getElementById('wavelengthInput').value);
+                const phase = parseFloat(document.getElementById('phaseInput').value) * Math.PI;
+                
+                for (let wave of this.waves) {
+                    wave.amplitude = amplitude;
+                    wave.frequency = frequency;
+                    wave.wavelength = wavelength;
+                    wave.phase = phase;
+                }
+            }
+            
+            updateWaveCount() {
+                const count = parseInt(document.getElementById('waveCountInput').value);
+                const currentCount = this.waves.length;
+                
+                if (count > currentCount) {
+                    // 파동 추가
+                    for (let i = currentCount; i < count; i++) {
+                        const phase = (i * Math.PI) / count;
+                        this.addWave(50, 1, 200, phase);
+                    }
+                } else if (count < currentCount) {
+                    // 파동 제거
+                    this.waves = this.waves.slice(0, count);
+                }
+            }
+            
+            calculateWave(x, t) {
+                let totalAmplitude = 0;
+                
+                for (let wave of this.waves) {
+                    const k = 2 * Math.PI / wave.wavelength; // 파수
+                    const omega = 2 * Math.PI * wave.frequency; // 각주파수
+                    
+                    let amplitude;
+                    if (this.waveType === 'standing') {
+                        // 정상파: y = 2A sin(kx) cos(ωt + φ)
+                        amplitude = 2 * wave.amplitude * Math.sin(k * x) * Math.cos(omega * t + wave.phase);
+                    } else {
+                        // 진행파: y = A sin(kx - ωt + φ) 또는 y = A sin(kx + ωt + φ)
+                        const direction = wave.direction;
+                        amplitude = wave.amplitude * Math.sin(k * x - direction * omega * t + wave.phase);
+                    }
+                    
+                    totalAmplitude += amplitude;
+                }
+                
+                return totalAmplitude;
+            }
+            
+            calculateWaveSpeed() {
+                if (this.waves.length === 0) return 0;
+                const frequency = this.waves[0].frequency;
+                const wavelength = this.waves[0].wavelength;
+                return frequency * wavelength;
+            }
+            
+            calculateWaveEnergy() {
+                let totalEnergy = 0;
+                for (let wave of this.waves) {
+                    const amplitude = wave.amplitude;
+                    const frequency = wave.frequency;
+                    const energy = 0.5 * this.elasticModulus * amplitude * amplitude * frequency * frequency;
+                    totalEnergy += energy;
+                }
+                return totalEnergy;
+            }
+            
+            updateParticles() {
+                for (let particle of this.particles) {
+                    // 파동에 의한 힘 계산
+                    const waveForce = this.calculateWave(particle.x, this.time) * 0.1;
+                    particle.vy += waveForce;
+                    
+                    // 위치 업데이트
+                    particle.x += particle.vx;
+                    particle.y += particle.vy;
+                    
+                    // 속도 감쇠
+                    particle.vx *= particle.decay;
+                    particle.vy *= particle.decay;
+                    
+                    // 경계 처리
+                    if (particle.x < 0) particle.x = this.canvas.width;
+                    if (particle.x > this.canvas.width) particle.x = 0;
+                    if (particle.y < 0) particle.y = this.canvas.height;
+                    if (particle.y > this.canvas.height) particle.y = this.canvas.height;
+                    
+                    // 생명력 감소
+                    particle.life *= 0.99;
+                    if (particle.life < 0.1) {
+                        particle.life = 1;
+                        particle.x = Math.random() * this.canvas.width;
+                        particle.y = this.canvas.height / 2;
+                    }
+                }
+            }
+            
+            drawWave() {
+                this.ctx.save();
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // 변환 적용
+                this.ctx.translate(this.panX * this.zoom, this.panY * this.zoom);
+                this.ctx.scale(this.zoom, this.zoom);
+                
+                // 격자 그리기
+                this.drawGrid();
+                
+                // 파동 그리기
+                this.ctx.save();
+                this.ctx.strokeStyle = '#ffffff';
+                this.ctx.lineWidth = 3 / this.zoom;
+                this.ctx.beginPath();
+                
+                for (let x = 0; x < this.canvas.width / this.zoom; x++) {
+                    const y = this.canvas.height / (2 * this.zoom) + this.calculateWave(x, this.time);
+                    if (x === 0) {
+                        this.ctx.moveTo(x, y);
+                    } else {
+                        this.ctx.lineTo(x, y);
+                    }
+                }
+                
+                this.ctx.stroke();
+                this.ctx.restore();
+                
+                // 입자 그리기
+                if (document.getElementById('showParticles').checked) {
+                    this.drawParticles();
+                }
+                
+                // 진폭 표시
+                if (document.getElementById('showAmplitude').checked) {
+                    this.drawAmplitude();
+                }
+                
+                // 파장 표시
+                if (document.getElementById('showWavelength').checked) {
+                    this.drawWavelength();
+                }
+                
+                // 마디/배 표시 (정상파일 때)
+                if (document.getElementById('showNodes').checked && this.waveType === 'standing') {
+                    this.drawNodes();
+                }
+                
+                // 에너지 분포 표시
+                if (document.getElementById('showEnergy').checked) {
+                    this.drawEnergyDistribution();
+                }
+                
+                this.ctx.restore();
+            }
+            
+            drawParticles() {
+                this.ctx.save();
+                for (let particle of this.particles) {
+                    this.ctx.fillStyle = `rgba(255, 255, 255, ${particle.life})`;
+                    this.ctx.beginPath();
+                    this.ctx.arc(particle.x, particle.y, 2 / this.zoom, 0, 2 * Math.PI);
+                    this.ctx.fill();
+                }
+                this.ctx.restore();
+            }
+            
+            drawEnergyDistribution() {
+                this.ctx.save();
+                this.ctx.strokeStyle = 'rgba(255, 255, 0, 0.3)';
+                this.ctx.lineWidth = 2 / this.zoom;
+                
+                for (let x = 0; x < this.canvas.width / this.zoom; x += 10) {
+                    const energy = Math.abs(this.calculateWave(x, this.time));
+                    const height = energy * 0.5;
+                    
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, this.canvas.height / (2 * this.zoom) - height);
+                    this.ctx.lineTo(x, this.canvas.height / (2 * this.zoom) + height);
+                    this.ctx.stroke();
+                }
+                
+                this.ctx.restore();
+            }
+            
+            drawGrid() {
+                this.ctx.save();
+                this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                this.ctx.lineWidth = 1 / this.zoom;
+                
+                // 수직 격자
+                for (let x = 0; x < this.canvas.width / this.zoom; x += 50) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, 0);
+                    this.ctx.lineTo(x, this.canvas.height / this.zoom);
+                    this.ctx.stroke();
+                }
+                
+                // 수평 격자
+                for (let y = 0; y < this.canvas.height / this.zoom; y += 50) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(0, y);
+                    this.ctx.lineTo(this.canvas.width / this.zoom, y);
+                    this.ctx.stroke();
+                }
+                
+                this.ctx.restore();
+            }
+            
+            drawAmplitude() {
+                const amplitude = parseFloat(document.getElementById('amplitudeInput').value);
+                this.ctx.save();
+                this.ctx.strokeStyle = '#ffffff';
+                this.ctx.lineWidth = 2 / this.zoom;
+                this.ctx.setLineDash([5, 5]);
+                
+                this.ctx.beginPath();
+                this.ctx.moveTo(50, this.canvas.height / (2 * this.zoom) - amplitude);
+                this.ctx.lineTo(50, this.canvas.height / (2 * this.zoom) + amplitude);
+                this.ctx.stroke();
+                
+                this.ctx.setLineDash([]);
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.font = `${12 / this.zoom}px Arial`;
+                this.ctx.fillText('A', 60, this.canvas.height / (2 * this.zoom));
+                
+                this.ctx.restore();
+            }
+            
+            drawWavelength() {
+                const wavelength = parseFloat(document.getElementById('wavelengthInput').value);
+                this.ctx.save();
+                this.ctx.strokeStyle = '#888888';
+                this.ctx.lineWidth = 2 / this.zoom;
+                this.ctx.setLineDash([5, 5]);
+                
+                this.ctx.beginPath();
+                this.ctx.moveTo(100, this.canvas.height / (2 * this.zoom) - 30);
+                this.ctx.lineTo(100 + wavelength, this.canvas.height / (2 * this.zoom) - 30);
+                this.ctx.stroke();
+                
+                this.ctx.setLineDash([]);
+                this.ctx.fillStyle = '#888888';
+                this.ctx.font = `${12 / this.zoom}px Arial`;
+                this.ctx.fillText('λ', 100 + wavelength / 2, this.canvas.height / (2 * this.zoom) - 40);
+                
+                this.ctx.restore();
+            }
+            
+            drawNodes() {
+                const wavelength = parseFloat(document.getElementById('wavelengthInput').value);
+                const k = 2 * Math.PI / wavelength;
+                
+                this.ctx.save();
+                this.ctx.fillStyle = '#888888';
+                
+                // 마디 (진폭이 0인 지점)
+                for (let x = 0; x < this.canvas.width / this.zoom; x++) {
+                    if (Math.abs(Math.sin(k * x)) < 0.1) {
+                        this.ctx.beginPath();
+                        this.ctx.arc(x, this.canvas.height / (2 * this.zoom), 3 / this.zoom, 0, 2 * Math.PI);
+                        this.ctx.fill();
+                    }
+                }
+                
+                this.ctx.restore();
+            }
+            
+            drawInterferencePattern() {
+                if (!document.getElementById('showInterference').checked) return;
+                
+                this.patternCtx.clearRect(0, 0, this.patternCanvas.width, this.patternCanvas.height);
+                
+                this.patternCtx.save();
+                this.patternCtx.strokeStyle = '#ffffff';
+                this.patternCtx.lineWidth = 2;
+                
+                for (let x = 0; x < this.patternCanvas.width; x++) {
+                    const intensity = Math.abs(this.calculateWave(x, this.time));
+                    const brightness = Math.min(255, intensity * 2);
+                    
+                    this.patternCtx.strokeStyle = `rgb(${brightness}, ${brightness}, ${brightness})`;
+                    this.patternCtx.beginPath();
+                    this.patternCtx.moveTo(x, 0);
+                    this.patternCtx.lineTo(x, this.patternCanvas.height);
+                    this.patternCtx.stroke();
+                }
+                
+                this.patternCtx.restore();
+            }
+            
+            updateDataPanel() {
+                const waveSpeed = this.calculateWaveSpeed();
+                const waveEnergy = this.calculateWaveEnergy();
+                const maxAmplitude = Math.max(...this.waves.map(w => w.amplitude));
+                const interferenceIntensity = this.calculateInterferenceIntensity();
+                
+                document.getElementById('waveSpeed').textContent = waveSpeed.toFixed(1);
+                document.getElementById('waveEnergy').textContent = waveEnergy.toFixed(2);
+                document.getElementById('maxAmplitude').textContent = maxAmplitude.toFixed(1);
+                document.getElementById('interferenceIntensity').textContent = interferenceIntensity.toFixed(2);
+            }
+            
+            calculateInterferenceIntensity() {
+                let maxIntensity = 0;
+                for (let x = 0; x < this.canvas.width; x++) {
+                    const intensity = Math.abs(this.calculateWave(x, this.time));
+                    maxIntensity = Math.max(maxIntensity, intensity);
+                }
+                return maxIntensity;
+            }
+            
+            animate() {
+                if (this.isRunning) {
+                    this.time += 0.02 * this.simulationSpeed;
+                    this.updateParticles();
+                    this.drawWave();
+                    this.drawInterferencePattern();
+                    this.updateDataPanel();
+                }
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+        
+        // 전역 함수들
+        function setWaveType(type) {
+            simulation.waveType = type;
+            
+            // 활성 탭 업데이트
+            document.querySelectorAll('.wave-type').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // 파동 방향 설정
+            if (type === 'standing') {
+                for (let wave of simulation.waves) {
+                    wave.direction = 1; // 정상파는 한 방향만
+                }
+            } else {
+                // 진행파는 반대 방향으로 설정
+                for (let i = 0; i < simulation.waves.length; i++) {
+                    simulation.waves[i].direction = i % 2 === 0 ? 1 : -1;
+                }
+            }
+        }
+        
+        function addWave() {
+            const amplitude = parseFloat(document.getElementById('amplitudeInput').value);
+            const frequency = parseFloat(document.getElementById('frequencyInput').value);
+            const wavelength = parseFloat(document.getElementById('wavelengthInput').value);
+            const phase = parseFloat(document.getElementById('phaseInput').value) * Math.PI;
+            
+            simulation.addWave(amplitude, frequency, wavelength, phase);
+        }
+        
+        function clearWaves() {
+            simulation.waves = [];
+        }
+        
+        function resetSimulation() {
+            simulation.waves = [];
+            simulation.time = 0;
+            simulation.addDefaultWaves();
+        }
+        
+        function pauseResume() {
+            simulation.isRunning = !simulation.isRunning;
+        }
+        
+        function zoomIn() {
+            simulation.zoom *= 1.2;
+            simulation.zoom = Math.min(5, simulation.zoom);
+        }
+        
+        function zoomOut() {
+            simulation.zoom *= 0.8;
+            simulation.zoom = Math.max(0.1, simulation.zoom);
+        }
+        
+        function resetZoom() {
+            simulation.zoom = 1;
+            simulation.panX = 0;
+            simulation.panY = 0;
+        }
+        
+        // 시뮬레이션 시작
+        const simulation = new WaveSimulation();
+    </script>
+</body>
+</html> 
