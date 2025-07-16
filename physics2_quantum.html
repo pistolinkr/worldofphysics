@@ -1180,6 +1180,9 @@
             simulation.measurementResults = [];
             document.getElementById('timeSlider').value = 0;
             document.getElementById('timeInput').value = 0;
+            
+            // 양자 데이터 업데이트
+            simulation.updateQuantumData();
         }
         
         function pauseResume() {

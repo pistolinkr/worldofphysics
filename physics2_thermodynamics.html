@@ -817,7 +817,7 @@
                     const gamma = 1.4;
                     T = this.hotTemp * Math.pow(V2 / V, gamma - 1);
                     P = this.n * this.R * T / V;
-                    S = this.n * this.R * Math.log(V2 / 0.001); // 엔트로피 변화 없음
+                    S = this.n * this.R * Math.log(V2 / 0.001); // 단열 과정에서 엔트로피 변화 없음
                 } else if (phase < 0.75) {
                     // 3단계: 등온 압축 (저온부에서)
                     step = 'isothermal_compression';
@@ -839,7 +839,7 @@
                     const gamma = 1.4;
                     T = this.coldTemp * Math.pow(V4 / V, gamma - 1);
                     P = this.n * this.R * T / V;
-                    S = 0; // 엔트로피 변화 없음
+                    S = 0; // 단열 과정에서 엔트로피 변화 없음
                 }
                 
                 return { P, V, T, step, S };
@@ -1270,25 +1270,29 @@
                     const currentData = this.calculateCarnotCycle(this.time);
                     const prevData = this.calculateCarnotCycle(this.time - 0.02 * this.simulationSpeed);
                     
-                    // 일 계산: W = ∫PdV
+                    // 일 계산: W = ∫PdV (팽창 시 양의 일, 압축 시 음의 일)
                     const dV = currentData.V - prevData.V;
                     const work = currentData.P * dV;
                     
+                    // 팽창 과정에서는 기체가 일을 하므로 양수
                     if (currentData.step.includes('expansion')) {
-                        this.totalWork += work;
-                    } else {
-                        this.totalWork -= work;
+                        this.totalWork += Math.abs(work);
+                    } else if (currentData.step.includes('compression')) {
+                        // 압축 과정에서는 외부가 기체에 일을 하므로 음수
+                        this.totalWork -= Math.abs(work);
                     }
                     
-                    // 열 계산: Q = TΔS (등온 과정에서)
+                    // 열 계산: Q = TΔS (등온 과정에서만 열 교환)
                     if (currentData.step.includes('isothermal')) {
                         const dS = currentData.S - prevData.S;
                         const heat = currentData.T * dS;
                         
                         if (currentData.T === this.hotTemp) {
-                            this.totalHeatAbsorbed += heat;
+                            // 고온부 등온 과정에서는 열 흡수
+                            this.totalHeatAbsorbed += Math.abs(heat);
                         } else {
-                            this.totalHeatReleased += heat;
+                            // 저온부 등온 과정에서는 열 방출
+                            this.totalHeatReleased += Math.abs(heat);
                         }
                     }
                     
@@ -1316,6 +1320,14 @@
             simulation.totalWork = 0;
             simulation.totalHeatAbsorbed = 0;
             simulation.totalHeatReleased = 0;
+            
+            // 데이터 패널 업데이트
+            document.getElementById('workDone').textContent = '0.00';
+            document.getElementById('heatAbsorbed').textContent = '0.00';
+            document.getElementById('heatReleased').textContent = '0.00';
+            
+            // 시뮬레이션 데이터 업데이트
+            simulation.updateThermodynamicsData();
         }
         
         function pauseResume() {

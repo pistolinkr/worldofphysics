@@ -835,6 +835,7 @@
             
             calculateWaveSpeed() {
                 if (this.waves.length === 0) return 0;
+                // 파동 속도: v = fλ (주파수 × 파장)
                 const frequency = this.waves[0].frequency;
                 const wavelength = this.waves[0].wavelength;
                 return frequency * wavelength;
