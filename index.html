@@ -163,11 +163,58 @@
         }
         
         .footer {
-            text-align: center;
             margin-top: 40px;
             padding-top: 20px;
             border-top: 1px solid #444;
-            opacity: 0.8;
+            opacity: 0.9;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h4 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            border-bottom: 2px solid #555;
+            padding-bottom: 8px;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-links a:hover {
+            color: #fff;
+            transform: translateX(5px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #888;
+        }
+        
+        .footer-bottom p {
+            margin: 5px 0;
+            font-size: 0.9em;
         }
 
         @media (max-width: 700px) {
@@ -210,6 +257,19 @@
             .formula-highlight {
                 padding: 8px;
                 font-size: 0.95em;
+            }
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .footer-section h4 {
+                font-size: 1em;
+            }
+            .footer-links a {
+                font-size: 0.9em;
+            }
+            .footer-bottom p {
+                font-size: 0.8em;
             }
         }
     </style>
@@ -333,8 +393,41 @@
         </div>
         
         <div class="footer">
-            <p>고등학교 물리학2 교육용 프로그래밍 프로젝트</p>
-            <p>HTML5 Canvas와 JavaScript를 활용한 인터랙티브 시뮬레이션</p>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>🔗 빠른 링크</h4>
+                    <div class="footer-links">
+                        <a href="physics2_electromagnetism.html" target="_blank">⚡ 전자기학</a>
+                        <a href="physics2_waves.html" target="_blank">🌊 파동</a>
+                        <a href="physics2_quantum.html" target="_blank">⚛️ 양자역학</a>
+                        <a href="physics2_thermodynamics.html" target="_blank">🔥 열역학</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>📖 솔루션 & 사용방법</h4>
+                    <div class="footer-links">
+                        <a href="#usage-guide">사용 가이드</a>
+                        <a href="#learning-objectives">학습 목표</a>
+                        <a href="#formulas">핵심 공식</a>
+                        <a href="README.md" target="_blank">프로젝트 문서</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>📞 연락처</h4>
+                    <div class="footer-links">
+                        <a href="mailto:pistolinkr@icloud.com">📧 pistolinkr@icloud.com</a>
+                        <a href="https://github.com/pistolinkr/worldofphysics" target="_blank">🐙 GitHub Repository</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>고등학교 물리학2 교육용 프로그래밍 프로젝트</p>
+                <p>HTML5 Canvas와 JavaScript를 활용한 인터랙티브 시뮬레이션</p>
+                <p>&copy; 2025 World of Physics. All rights reserved.</p>
+            </div>
         </div>
     </div>
 </body>
