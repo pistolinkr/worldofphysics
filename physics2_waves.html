@@ -363,7 +363,7 @@
         
         .metric-card h4 {
             color: #2c3e50;
-            margin-bottom: 15px;
+                margin-bottom: 15px;
             font-size: 1.2em;
         }
         
@@ -466,7 +466,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8em;
+                font-size: 0.8em;
             font-weight: bold;
         }
         
@@ -528,9 +528,9 @@
         
         .footer-bottom p {
             margin: 5px 0;
-            font-size: 0.9em;
-        }
-
+                font-size: 0.9em;
+            }
+            
         @media (max-width: 1024px) {
             .research-layout {
                 grid-template-columns: 1fr;
@@ -628,97 +628,97 @@
                 
                 <div class="control-group">
                     <h4>📏 파동 기본 설정</h4>
-                    <label>파동 유형:</label>
-                    <div>
-                        <span class="wave-type active" onclick="setWaveType('transverse')">횡파</span>
-                        <span class="wave-type" onclick="setWaveType('longitudinal')">종파</span>
-                        <span class="wave-type" onclick="setWaveType('standing')">정상파</span>
-                    </div>
-                    
-                    <label>진폭 (m):</label>
-                    <input type="range" id="amplitudeSlider" min="10" max="100" value="50">
-                    <input type="number" id="amplitudeInput" min="10" max="100" value="50">
-                    
-                    <label>주파수 (Hz):</label>
-                    <input type="range" id="frequencySlider" min="0.1" max="5" step="0.1" value="1">
-                    <input type="number" id="frequencyInput" min="0.1" max="5" step="0.1" value="1">
-                    
-                    <label>파장 (m):</label>
-                    <input type="range" id="wavelengthSlider" min="50" max="400" value="200">
-                    <input type="number" id="wavelengthInput" min="50" max="400" value="200">
+                <label>파동 유형:</label>
+                <div>
+                    <span class="wave-type active" onclick="setWaveType('transverse')">횡파</span>
+                    <span class="wave-type" onclick="setWaveType('longitudinal')">종파</span>
+                    <span class="wave-type" onclick="setWaveType('standing')">정상파</span>
                 </div>
                 
+                <label>진폭 (m):</label>
+                <input type="range" id="amplitudeSlider" min="10" max="100" value="50">
+                <input type="number" id="amplitudeInput" min="10" max="100" value="50">
+                
+                <label>주파수 (Hz):</label>
+                <input type="range" id="frequencySlider" min="0.1" max="5" step="0.1" value="1">
+                <input type="number" id="frequencyInput" min="0.1" max="5" step="0.1" value="1">
+                
+                <label>파장 (m):</label>
+                <input type="range" id="wavelengthSlider" min="50" max="400" value="200">
+                <input type="number" id="wavelengthInput" min="50" max="400" value="200">
+            </div>
+            
                 <div class="control-group">
                     <h4>🔀 간섭 설정</h4>
-                    <label>파동 개수:</label>
-                    <input type="range" id="waveCountSlider" min="1" max="5" value="2">
-                    <input type="number" id="waveCountInput" min="1" max="5" value="2">
-                    
-                    <label>위상차 (π):</label>
-                    <input type="range" id="phaseSlider" min="0" max="2" step="0.1" value="0">
-                    <input type="number" id="phaseInput" min="0" max="2" step="0.1" value="0">
-                    
-                    <label>간섭 패턴:</label>
-                    <select id="interferenceType">
-                        <option value="constructive">보강 간섭</option>
-                        <option value="destructive">상쇄 간섭</option>
-                        <option value="mixed">혼합 간섭</option>
-                    </select>
-                    
-                    <button onclick="addWave()">➕ 파동 추가</button>
-                    <button onclick="clearWaves()">🗑️ 모든 파동 제거</button>
-                </div>
+                <label>파동 개수:</label>
+                <input type="range" id="waveCountSlider" min="1" max="5" value="2">
+                <input type="number" id="waveCountInput" min="1" max="5" value="2">
                 
+                <label>위상차 (π):</label>
+                <input type="range" id="phaseSlider" min="0" max="2" step="0.1" value="0">
+                <input type="number" id="phaseInput" min="0" max="2" step="0.1" value="0">
+                
+                <label>간섭 패턴:</label>
+                <select id="interferenceType">
+                    <option value="constructive">보강 간섭</option>
+                    <option value="destructive">상쇄 간섭</option>
+                    <option value="mixed">혼합 간섭</option>
+                </select>
+                
+                <button onclick="addWave()">➕ 파동 추가</button>
+                <button onclick="clearWaves()">🗑️ 모든 파동 제거</button>
+            </div>
+            
                 <div class="control-group">
                     <h4>⚙️ 시뮬레이션 설정</h4>
-                    <label>시뮬레이션 속도:</label>
-                    <input type="range" id="speedSlider" min="0.1" max="3" step="0.1" value="1">
-                    <input type="number" id="speedInput" min="0.1" max="3" step="0.1" value="1">
-                    
+                <label>시뮬레이션 속도:</label>
+                <input type="range" id="speedSlider" min="0.1" max="3" step="0.1" value="1">
+                <input type="number" id="speedInput" min="0.1" max="3" step="0.1" value="1">
+                
                     <label><input type="checkbox" id="showAmplitude" checked> 진폭 표시</label>
                     <label><input type="checkbox" id="showWavelength" checked> 파장 표시</label>
                     <label><input type="checkbox" id="showInterference" checked> 간섭 패턴</label>
                     <label><input type="checkbox" id="showNodes" checked> 마디/배 표시</label>
                     <label><input type="checkbox" id="showParticles" checked> 입자 시스템</label>
                     <label><input type="checkbox" id="showEnergy" checked> 에너지 분포</label>
-                    
-                    <button onclick="resetSimulation()">🔄 시뮬레이션 재시작</button>
-                    <button onclick="pauseResume()">⏸️ 일시정지/재생</button>
-                </div>
-            </div>
-            
-            <div class="simulation-area">
-                <div class="canvas-container">
-                    <div class="zoom-controls">
-                        <button onclick="zoomIn()">🔍+</button>
-                        <button onclick="zoomOut()">🔍-</button>
-                        <button onclick="resetZoom()">🏠</button>
-                    </div>
-                    <canvas id="waveCanvas" width="800" height="400"></canvas>
-                </div>
                 
-                <div class="data-panel">
-                    <div class="data-item">
+                <button onclick="resetSimulation()">🔄 시뮬레이션 재시작</button>
+                <button onclick="pauseResume()">⏸️ 일시정지/재생</button>
+            </div>
+        </div>
+        
+            <div class="simulation-area">
+        <div class="canvas-container">
+            <div class="zoom-controls">
+                <button onclick="zoomIn()">🔍+</button>
+                <button onclick="zoomOut()">🔍-</button>
+                <button onclick="resetZoom()">🏠</button>
+            </div>
+            <canvas id="waveCanvas" width="800" height="400"></canvas>
+        </div>
+        
+        <div class="data-panel">
+            <div class="data-item">
                         <span class="data-value" id="waveSpeed">0</span>
                         <span class="data-label">파동 속도 (m/s)</span>
-                    </div>
-                    <div class="data-item">
+            </div>
+            <div class="data-item">
                         <span class="data-value" id="waveEnergy">0</span>
                         <span class="data-label">총 에너지 (J)</span>
-                    </div>
-                    <div class="data-item">
+            </div>
+            <div class="data-item">
                         <span class="data-value" id="maxAmplitude">0</span>
                         <span class="data-label">최대 진폭 (m)</span>
-                    </div>
-                    <div class="data-item">
+            </div>
+            <div class="data-item">
                         <span class="data-value" id="interferenceIntensity">0</span>
                         <span class="data-label">간섭 강도</span>
-                    </div>
-                </div>
-                
+            </div>
+        </div>
+        
                 <div class="interference-pattern">
                     <h3>🔍 간섭 패턴 분석</h3>
-                    <canvas id="patternCanvas" width="800" height="200"></canvas>
+            <canvas id="patternCanvas" width="800" height="200"></canvas>
                 </div>
             </div>
         </div>
@@ -731,14 +731,14 @@
                 <strong>상쇄 간섭:</strong> 경로차 = (n + 1/2)λ (n = 0, 1, 2, ...)<br>
                 <strong>파동 에너지:</strong> E = ½kA² (k: 탄성계수, A: 진폭)
             </div>
-        </div>
+            </div>
         
         <div class="theory-explanation">
             <h4>🔬 이론적 배경</h4>
             <p><strong>파동의 성질:</strong> 파동은 에너지와 운동량을 전달하는 현상으로, 매질의 진동이 공간과 시간에 따라 전파됩니다. 파동의 기본 성질로는 진폭, 주파수, 파장, 속도가 있습니다.</p>
             <p><strong>간섭 현상:</strong> 두 개 이상의 파동이 같은 공간에서 만날 때 발생하는 현상으로, 보강 간섭과 상쇄 간섭으로 나뉩니다. 이는 파동의 중첩 원리에 기반합니다.</p>
             <p><strong>정상파:</strong> 같은 진폭과 주파수를 가진 두 파동이 반대 방향으로 진행할 때 발생하는 특별한 파동 형태로, 마디와 배가 형성됩니다.</p>
-        </div>
+            </div>
         
         <div class="experiment-methodology">
             <h3>🔬 실험 방법론</h3>
@@ -750,7 +750,7 @@
                 <li><strong>패턴 분석:</strong> 간섭 패턴을 분석하여 보강/상쇄 지점을 식별합니다.</li>
                 <li><strong>이론 검증:</strong> 실험 결과를 파동 이론과 비교하여 검증합니다.</li>
             </ol>
-        </div>
+            </div>
         
         <div class="theory-explanation">
             <h4>💡 실험 가이드</h4>
@@ -1020,7 +1020,7 @@
                 this.waves = [];
                 
                 for (let i = 0; i < waveCount; i++) {
-                    this.waves.push({
+                this.waves.push({
                         amplitude: parseFloat(document.getElementById('amplitudeInput').value),
                         frequency: parseFloat(document.getElementById('frequencyInput').value),
                         wavelength: parseFloat(document.getElementById('wavelengthInput').value),
@@ -1240,7 +1240,7 @@
                 if (this.isRunning) {
                     this.update();
                     this.draw();
-                    requestAnimationFrame(() => this.animate());
+                requestAnimationFrame(() => this.animate());
                 }
             }
         }

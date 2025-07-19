@@ -304,7 +304,7 @@
             font-size: 0.8em;
             font-weight: bold;
         }
-        
+
         .methodology-steps {
             counter-reset: step-counter;
         }
@@ -441,62 +441,62 @@
                 
                 <div class="control-group">
                     <h4>🔋 전하 설정</h4>
-                    <label>전하량 (C):</label>
-                    <input type="range" id="chargeSlider" min="-5" max="5" step="0.1" value="1">
-                    <input type="number" id="chargeInput" min="-5" max="5" step="0.1" value="1">
-                    
-                    <label>전하 개수:</label>
-                    <input type="range" id="particleCountSlider" min="1" max="10" value="3">
-                    <input type="number" id="particleCountInput" min="1" max="10" value="3">
-                    
-                    <button onclick="addRandomCharges()">🎲 랜덤 전하 추가</button>
-                    <button onclick="clearCharges()">🗑️ 모든 전하 제거</button>
-                </div>
+                <label>전하량 (C):</label>
+                <input type="range" id="chargeSlider" min="-5" max="5" step="0.1" value="1">
+                <input type="number" id="chargeInput" min="-5" max="5" step="0.1" value="1">
                 
-                <div class="control-group">
-                    <h4>🧲 자기장 설정</h4>
-                    <label>자기장 세기 (T):</label>
-                    <input type="range" id="magneticFieldSlider" min="0" max="2" step="0.1" value="0">
-                    <input type="number" id="magneticFieldInput" min="0" max="2" step="0.1" value="0">
-                    
-                    <label>자기장 방향:</label>
-                    <select id="magneticDirection">
-                        <option value="up">위쪽 (↑)</option>
-                        <option value="down">아래쪽 (↓)</option>
-                        <option value="left">왼쪽 (←)</option>
-                        <option value="right">오른쪽 (→)</option>
-                    </select>
-                    
-                    <button onclick="toggleMagneticField()">🧲 자기장 토글</button>
-                </div>
+                <label>전하 개수:</label>
+                <input type="range" id="particleCountSlider" min="1" max="10" value="3">
+                <input type="number" id="particleCountInput" min="1" max="10" value="3">
                 
-                <div class="control-group">
-                    <h4>⚙️ 시뮬레이션 설정</h4>
-                    <label>시뮬레이션 속도:</label>
-                    <input type="range" id="speedSlider" min="0.1" max="2" step="0.1" value="1">
-                    <input type="number" id="speedInput" min="0.1" max="2" step="0.1" value="1">
-                    
-                    <label><input type="checkbox" id="showFieldLines" checked> 전기장선 표시</label>
-                    <label><input type="checkbox" id="showForceVectors"> 힘 벡터 표시</label>
-                    
-                    <button onclick="resetSimulation()">🔄 시뮬레이션 재시작</button>
-                </div>
+                <button onclick="addRandomCharges()">🎲 랜덤 전하 추가</button>
+                <button onclick="clearCharges()">🗑️ 모든 전하 제거</button>
             </div>
             
-            <div class="simulation-area">
-                <div class="canvas-container">
-                    <canvas id="physicsCanvas" width="800" height="600"></canvas>
-                </div>
+                <div class="control-group">
+                    <h4>🧲 자기장 설정</h4>
+                <label>자기장 세기 (T):</label>
+                <input type="range" id="magneticFieldSlider" min="0" max="2" step="0.1" value="0">
+                <input type="number" id="magneticFieldInput" min="0" max="2" step="0.1" value="0">
                 
+                <label>자기장 방향:</label>
+                <select id="magneticDirection">
+                    <option value="up">위쪽 (↑)</option>
+                    <option value="down">아래쪽 (↓)</option>
+                    <option value="left">왼쪽 (←)</option>
+                    <option value="right">오른쪽 (→)</option>
+                </select>
+                
+                <button onclick="toggleMagneticField()">🧲 자기장 토글</button>
+            </div>
+            
+                <div class="control-group">
+                    <h4>⚙️ 시뮬레이션 설정</h4>
+                <label>시뮬레이션 속도:</label>
+                <input type="range" id="speedSlider" min="0.1" max="2" step="0.1" value="1">
+                <input type="number" id="speedInput" min="0.1" max="2" step="0.1" value="1">
+                
+                    <label><input type="checkbox" id="showFieldLines" checked> 전기장선 표시</label>
+                    <label><input type="checkbox" id="showForceVectors"> 힘 벡터 표시</label>
+                
+                <button onclick="resetSimulation()">🔄 시뮬레이션 재시작</button>
+            </div>
+        </div>
+        
+            <div class="simulation-area">
+        <div class="canvas-container">
+            <canvas id="physicsCanvas" width="800" height="600"></canvas>
+        </div>
+        
                 <div class="data-panel">
                     <div class="data-item">
                         <span class="data-value" id="totalForce">0.00</span>
                         <span class="data-label">총 힘 (N)</span>
-                    </div>
+            </div>
                     <div class="data-item">
                         <span class="data-value" id="electricField">0.00</span>
                         <span class="data-label">전기장 (N/C)</span>
-                    </div>
+            </div>
                     <div class="data-item">
                         <span class="data-value" id="magneticField">0.00</span>
                         <span class="data-label">자기장 (T)</span>
@@ -682,39 +682,27 @@
             }
             
             initializeSimulation() {
-                // 기본 전하들을 추가
                 this.addRandomCharges();
                 this.updateMagneticField();
                 this.startAnimation();
-                
-                // 디버깅을 위한 콘솔 로그
-                console.log('시뮬레이션 초기화됨');
-                console.log('전하 개수:', this.charges.length);
-                console.log('캔버스 크기:', this.canvas.width, 'x', this.canvas.height);
             }
             
             addRandomCharges() {
-                const count = parseInt(document.getElementById('particleCountInput').value) || 3;
-                const chargeValue = parseFloat(document.getElementById('chargeInput').value) || 1;
-                
-                console.log('전하 생성 시작:', count, '개, 전하량:', chargeValue);
-                
+                const count = parseInt(document.getElementById('particleCountInput').value);
                 this.charges = [];
                 
                 for (let i = 0; i < count; i++) {
                     const charge = {
                         x: Math.random() * (this.canvas.width - 100) + 50,
                         y: Math.random() * (this.canvas.height - 100) + 50,
-                        q: chargeValue * (Math.random() > 0.5 ? 1 : -1),
+                        q: parseFloat(document.getElementById('chargeInput').value) * (Math.random() > 0.5 ? 1 : -1),
                         vx: (Math.random() - 0.5) * 2,
                         vy: (Math.random() - 0.5) * 2,
-                        radius: 12 // 더 크게 만들어서 잘 보이게
+                        radius: 8
                     };
                     this.charges.push(charge);
-                    console.log('전하 생성됨:', charge);
                 }
                 
-                console.log('총 전하 개수:', this.charges.length);
                 this.updateDataPanel();
             }
             
@@ -752,13 +740,13 @@
                         this.magneticField.x = strength;
                         this.magneticField.y = 0;
                         break;
-                }
-                
+            }
+            
                 this.updateDataPanel();
             }
             
             handleClick(e) {
-                const rect = this.canvas.getBoundingClientRect();
+                    const rect = this.canvas.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
                 const charge = parseFloat(document.getElementById('chargeInput').value);
@@ -799,18 +787,18 @@
                         if (i !== j) {
                             const dx = this.charges[j].x - this.charges[i].x;
                             const dy = this.charges[j].y - this.charges[i].y;
-                            const r = Math.sqrt(dx * dx + dy * dy);
-                            
+                    const r = Math.sqrt(dx * dx + dy * dy);
+                    
                             if (r > 0) {
                                 const force = k * this.charges[i].q * this.charges[j].q / (r * r);
                                 fx += force * dx / r;
                                 fy += force * dy / r;
-                            }
-                        }
                     }
-                    
+                }
+                    }
+                
                     // 자기력 계산 (로렌츠 힘)
-                    if (this.magneticField.strength > 0) {
+                if (this.magneticField.strength > 0) {
                         const vx = this.charges[i].vx;
                         const vy = this.charges[i].vy;
                         const q = this.charges[i].q;
@@ -853,7 +841,7 @@
                         const y = (j / lineCount) * this.canvas.height;
                         
                         let ex = 0, ey = 0;
-                        
+                            
                         // 전기장 계산
                         for (const charge of this.charges) {
                             const dx = x - charge.x;
@@ -884,20 +872,15 @@
             }
             
             drawCharges() {
-                console.log('전하 그리기 시작, 전하 개수:', this.charges.length);
-                
                 for (const charge of this.charges) {
-                    // 전하 위치 확인
-                    console.log('전하 위치:', charge.x, charge.y, '전하량:', charge.q);
-                    
                     this.ctx.beginPath();
                     this.ctx.arc(charge.x, charge.y, charge.radius, 0, 2 * Math.PI);
                     
                     if (charge.q > 0) {
-                        this.ctx.fillStyle = '#ff4757'; // 빨간색 (양전하)
+                        this.ctx.fillStyle = '#ff4757';
                         this.ctx.shadowColor = '#ff4757';
                     } else {
-                        this.ctx.fillStyle = '#3742fa'; // 파란색 (음전하)
+                        this.ctx.fillStyle = '#3742fa';
                         this.ctx.shadowColor = '#3742fa';
                     }
                     
@@ -907,18 +890,13 @@
                     
                     // 전하량 표시
                     this.ctx.fillStyle = 'white';
-                    this.ctx.font = 'bold 12px Arial';
+                    this.ctx.font = '12px Arial';
                     this.ctx.textAlign = 'center';
                     this.ctx.fillText(charge.q > 0 ? '+' + charge.q.toFixed(1) : charge.q.toFixed(1), 
                                     charge.x, charge.y + 4);
-                    
-                    // 전하 테두리 추가
-                    this.ctx.strokeStyle = 'white';
-                    this.ctx.lineWidth = 2;
-                    this.ctx.stroke();
                 }
-            }
-            
+                }
+                
             drawForceVectors() {
                 if (!this.showForceVectors) return;
                 
@@ -953,7 +931,7 @@
                         
                         fx += magneticForceX;
                         fy += magneticForceY;
-                    }
+                }
                     
                     const magnitude = Math.sqrt(fx * fx + fy * fy);
                     if (magnitude > 1e6) {
@@ -1005,7 +983,7 @@
                                 
                                 const field = k * this.charges[j].q / (r * r);
                                 maxElectricField = Math.max(maxElectricField, field);
-                            }
+            }
                         }
                     }
                     
@@ -1029,7 +1007,7 @@
             update() {
                 this.calculateForces();
                 this.updateDataPanel();
-            }
+                }
             
             animate() {
                 if (this.isRunning) {
@@ -1037,17 +1015,6 @@
                     this.draw();
                     requestAnimationFrame(() => this.animate());
                 }
-            }
-            
-            // 디버깅용 함수 추가
-            debugInfo() {
-                console.log('=== 시뮬레이션 디버그 정보 ===');
-                console.log('캔버스 크기:', this.canvas.width, 'x', this.canvas.height);
-                console.log('전하 개수:', this.charges.length);
-                console.log('시뮬레이션 실행 중:', this.isRunning);
-                console.log('전하 목록:', this.charges);
-                console.log('자기장:', this.magneticField);
-                console.log('========================');
             }
             
             startAnimation() {
@@ -1085,36 +1052,9 @@
             simulation = new PhysicsSimulation();
         }
         
-        function debugSimulation() {
-            if (simulation) {
-                simulation.debugInfo();
-            } else {
-                console.log('시뮬레이션이 초기화되지 않았습니다.');
-            }
-        }
-        
-        function forceAddCharges() {
-            if (simulation) {
-                simulation.addRandomCharges();
-                console.log('강제로 전하 추가됨');
-            }
-        }
-        
         // 페이지 로드 시 시뮬레이션 시작
         window.addEventListener('load', () => {
-            console.log('페이지 로드됨, 시뮬레이션 초기화 시작...');
             simulation = new PhysicsSimulation();
-            
-            // 1초 후 디버그 정보 출력
-            setTimeout(() => {
-                console.log('1초 후 디버그 정보:');
-                debugSimulation();
-            }, 1000);
-        });
-        
-        // DOM이 준비되면 즉시 실행
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM 준비됨');
         });
     </script>
 </body>
