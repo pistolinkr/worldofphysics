@@ -3,362 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>전자기학 연구 시뮬레이션 - 물리학2</title>
+    <title>물리학2 - 전자기학 시뮬레이션</title>
     <style>
         body {
-            font-family: 'Georgia', 'Times New Roman', serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #000000;
             min-height: 100vh;
-            color: #333;
-        }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: #ffffff;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            border: 1px solid #e0e0e0;
-        }
-        
-        .header-section {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
             color: white;
         }
         
-        h1 {
-            margin-bottom: 15px;
-            font-size: 3em;
-            font-weight: 300;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            letter-spacing: 2px;
-        }
-        
-        .subtitle {
-            font-size: 1.3em;
-            margin-bottom: 20px;
-            opacity: 0.95;
-            font-weight: 300;
-        }
-        
-        .research-metrics {
-            display: flex;
-            justify-content: space-around;
-            background: rgba(255,255,255,0.1);
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #111111;
+            border-radius: 15px;
             padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
+            border: 1px solid #333333;
         }
         
-        .metric-item {
+        h1 {
             text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
         
-        .metric-number {
-            font-size: 2em;
-            font-weight: bold;
-            display: block;
-        }
-        
-        .metric-label {
-            font-size: 0.9em;
-            opacity: 0.9;
-        }
-        
-        .research-layout {
+        .controls {
             display: grid;
-            grid-template-columns: 350px 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
         }
         
         .control-panel {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 25px;
-            border: 1px solid #e9ecef;
-            height: fit-content;
-            position: sticky;
-            top: 20px;
+            background: #222222;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #444444;
         }
         
         .control-panel h3 {
             margin-top: 0;
-            color: #2c3e50;
-            font-size: 1.4em;
-            border-bottom: 2px solid #667eea;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .control-group {
-            margin-bottom: 25px;
-            padding: 15px;
-            background: white;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-        }
-        
-        .control-group h4 {
-            margin: 0 0 15px 0;
-            color: #495057;
-            font-size: 1.1em;
+            color: #ffffff;
         }
         
         label {
             display: block;
-            margin: 12px 0 6px 0;
-            font-weight: 600;
-            color: #495057;
+            margin: 10px 0 5px 0;
+            font-weight: bold;
         }
         
-        input[type="range"], input[type="number"], select {
+        input[type="range"], input[type="number"] {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 8px;
-            background: white;
-            color: #495057;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            background: #333333;
+            color: white;
             margin-bottom: 10px;
-            font-size: 0.95em;
         }
         
         input[type="number"] {
-            width: calc(100% - 20px);
-        }
-        
-        input[type="checkbox"] {
-            margin-right: 8px;
-            transform: scale(1.2);
+            width: calc(100% - 16px);
         }
         
         button {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
+            background: #ffffff;
+            color: #000000;
             border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
+            padding: 10px 20px;
+            border-radius: 5px;
             cursor: pointer;
             margin: 5px;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            font-size: 0.9em;
+            transition: transform 0.2s;
         }
         
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-        }
-        
-        .simulation-area {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 25px;
-            border: 1px solid #e9ecef;
+            transform: scale(1.05);
         }
         
         .canvas-container {
             text-align: center;
             margin: 20px 0;
-            position: relative;
         }
         
         #physicsCanvas {
-            border: 2px solid #667eea;
-            border-radius: 12px;
+            border: 2px solid #444444;
+            border-radius: 10px;
             background: #000000;
             cursor: crosshair;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         
-        .data-panel {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
+        .info-panel {
+            background: #222222;
+            padding: 15px;
+            border-radius: 10px;
             margin-top: 20px;
-            border: 1px solid #e9ecef;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            border: 1px solid #444444;
         }
         
-        .data-item {
-            text-align: center;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
+        .info-panel h3 {
+            color: #ffffff;
+            margin-top: 0;
         }
         
-        .data-value {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #2c3e50;
-            display: block;
-        }
-        
-        .data-label {
-            font-size: 0.9em;
-            color: #6c757d;
-            margin-top: 5px;
-        }
-        
-        .academic-section {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 30px;
-            margin: 30px 0;
-            border: 1px solid #e9ecef;
-        }
-        
-        .academic-section h2 {
-            color: #2c3e50;
-            margin-bottom: 25px;
-            font-size: 2em;
-            text-align: center;
-            font-weight: 600;
-        }
-        
-        .formula-highlight {
-            background: #2c3e50;
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
+        .formula {
+            background: #333333;
+            padding: 10px;
+            border-radius: 5px;
             font-family: 'Courier New', monospace;
-            text-align: center;
-            margin: 20px 0;
-            border: 1px solid #34495e;
-            font-size: 1.1em;
-            line-height: 1.8;
-        }
-        
-        .theory-explanation {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            margin: 20px 0;
-            border-left: 5px solid #667eea;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        
-        .theory-explanation h4 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-        }
-        
-        .theory-explanation p {
-            color: #555;
-            line-height: 1.7;
             margin: 10px 0;
+            text-align: center;
         }
         
-        .experiment-methodology {
-            background: #e9ecef;
-            padding: 25px;
-            border-radius: 12px;
-            margin: 30px 0;
-        }
-        
-        .experiment-methodology h3 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-        }
-        
-        .methodology-steps {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .methodology-steps li {
-            margin-bottom: 15px;
-            padding: 15px;
-            background: white;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-            position: relative;
-        }
-        
-        .methodology-steps li::before {
-            content: counter(step-counter);
-            counter-increment: step-counter;
+        .particle {
             position: absolute;
-            left: -10px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #667eea;
-            color: white;
-            width: 20px;
-            height: 20px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8em;
-            font-weight: bold;
+            pointer-events: none;
+        }
+        
+        .charge-positive {
+            background: #ff4757;
+            box-shadow: 0 0 10px #ff4757;
+        }
+        
+        .charge-negative {
+            background: #3742fa;
+            box-shadow: 0 0 10px #3742fa;
+        }
+        
+        .field-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffd700, transparent);
+            pointer-events: none;
         }
 
-        .methodology-steps {
-            counter-reset: step-counter;
-        }
-        
+        /* Footer Styles */
         .footer {
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 2px solid #e9ecef;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            opacity: 0.9;
         }
         
         .footer-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
             margin-bottom: 30px;
         }
         
         .footer-section h4 {
-            color: #2c3e50;
+            color: #fff;
             margin-bottom: 15px;
-            font-size: 1.2em;
-            border-bottom: 2px solid #667eea;
+            font-size: 1.1em;
+            border-bottom: 2px solid #555;
             padding-bottom: 8px;
         }
         
         .footer-links {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
         
         .footer-links a {
-            color: #555;
+            color: #ccc;
             text-decoration: none;
-            padding: 8px 0;
-            transition: all 0.3s ease;
+            padding: 5px 0;
+            transition: color 0.3s ease;
             display: flex;
             align-items: center;
             gap: 8px;
-            border-radius: 5px;
-            padding-left: 10px;
         }
         
         .footer-links a:hover {
-            color: #667eea;
-            background: #f8f9fa;
+            color: #fff;
             transform: translateX(5px);
         }
         
         .footer-bottom {
             text-align: center;
             padding-top: 20px;
-            border-top: 1px solid #e9ecef;
-            color: #6c757d;
+            border-top: 1px solid #444;
+            color: #888;
         }
         
         .footer-bottom p {
@@ -366,81 +199,135 @@
             font-size: 0.9em;
         }
 
-        @media (max-width: 1024px) {
-            .research-layout {
-                grid-template-columns: 1fr;
-            }
-            
-            .control-panel {
-                position: static;
-            }
-        }
-        
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
             .container {
-                padding: 20px;
-                margin: 10px;
+                padding: 5px;
+                margin: 0;
             }
             
             h1 {
-                font-size: 2.2em;
+                font-size: 1.3em;
+                margin-bottom: 15px;
             }
             
-            .subtitle {
-                font-size: 1.1em;
-            }
-            
-            .research-metrics {
-                flex-direction: column;
-                gap: 15px;
+            .controls {
+                grid-template-columns: 1fr !important;
+                gap: 8px;
             }
             
             .control-panel {
-                padding: 20px;
+                padding: 8px;
+                font-size: 0.85em;
+                margin-bottom: 8px;
             }
             
-            .data-panel {
-                grid-template-columns: repeat(2, 1fr);
+            .control-panel h3 {
+                font-size: 1em;
+                margin-bottom: 8px;
+            }
+            
+            label {
+                font-size: 0.8em;
+                margin: 5px 0 3px 0;
+            }
+            
+            input[type="range"], input[type="number"], select {
+                font-size: 0.9em;
+                padding: 6px 8px;
+                margin-bottom: 6px;
+            }
+            
+            button {
+                font-size: 0.85em;
+                padding: 6px 10px;
+                margin: 3px;
+            }
+            
+            .canvas-container {
+                margin: 8px 0;
+            }
+            
+            #physicsCanvas {
+                width: 100% !important;
+                height: 250px !important;
+                max-width: 100vw;
+                min-width: 0;
+            }
+            
+            .info-panel {
+                padding: 8px;
+                font-size: 0.85em;
+                margin-top: 8px;
+            }
+            
+            .info-panel h3 {
+                font-size: 1em;
+                margin-bottom: 8px;
+            }
+            
+            .formula {
+                font-size: 0.8em;
+                padding: 6px;
+                margin: 5px 0;
+            }
+            
+            .info-panel p {
+                font-size: 0.8em;
+                margin: 4px 0;
             }
             
             .footer-content {
                 grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .footer-section h4 {
+                font-size: 0.9em;
+            }
+            
+            .footer-links a {
+                font-size: 0.8em;
+                padding: 3px 0;
+            }
+            
+            .footer-bottom p {
+                font-size: 0.75em;
+            }
+        }
+        
+        /* 매우 작은 화면 (320px 이하) */
+        @media (max-width: 320px) {
+            .container {
+                padding: 3px;
+            }
+            
+            h1 {
+                font-size: 1.1em;
+            }
+            
+            .control-panel {
+                padding: 6px;
+                font-size: 0.8em;
+            }
+            
+            button {
+                font-size: 0.8em;
+                padding: 5px 8px;
+            }
+            
+            #physicsCanvas {
+                height: 200px !important;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header-section">
-            <h1>⚡ 전자기학 연구 시뮬레이션</h1>
-            <p class="subtitle">전기장과 자기장의 상호작용을 통한 물리학적 현상의 실험적 탐구</p>
-            
-            <div class="research-metrics">
-                <div class="metric-item">
-                    <span class="metric-number">15+</span>
-                    <span class="metric-label">실험 가능</span>
-                </div>
-                <div class="metric-item">
-                    <span class="metric-number">99.9%</span>
-                    <span class="metric-label">정확도</span>
-                </div>
-                <div class="metric-item">
-                    <span class="metric-number">실시간</span>
-                    <span class="metric-label">데이터 수집</span>
-                </div>
-                <div class="metric-item">
-                    <span class="metric-number">3D</span>
-                    <span class="metric-label">시각화</span>
-                </div>
-            </div>
-        </div>
+        <h1>⚡ 물리학2 - 전자기학 시뮬레이션 ⚡</h1>
         
-        <div class="research-layout">
+        <div class="controls">
             <div class="control-panel">
-                <h3>🔬 실험 제어</h3>
-                
-                <div class="control-group">
-                    <h4>🔋 전하 설정</h4>
+                <h3>🔋 전하 설정</h3>
                 <label>전하량 (C):</label>
                 <input type="range" id="chargeSlider" min="-5" max="5" step="0.1" value="1">
                 <input type="number" id="chargeInput" min="-5" max="5" step="0.1" value="1">
@@ -453,8 +340,8 @@
                 <button onclick="clearCharges()">🗑️ 모든 전하 제거</button>
             </div>
             
-                <div class="control-group">
-                    <h4>🧲 자기장 설정</h4>
+            <div class="control-panel">
+                <h3>🧲 자기장 설정</h3>
                 <label>자기장 세기 (T):</label>
                 <input type="range" id="magneticFieldSlider" min="0" max="2" step="0.1" value="0">
                 <input type="number" id="magneticFieldInput" min="0" max="2" step="0.1" value="0">
@@ -470,116 +357,37 @@
                 <button onclick="toggleMagneticField()">🧲 자기장 토글</button>
             </div>
             
-                <div class="control-group">
-                    <h4>⚙️ 시뮬레이션 설정</h4>
+            <div class="control-panel">
+                <h3>⚙️ 시뮬레이션 설정</h3>
                 <label>시뮬레이션 속도:</label>
                 <input type="range" id="speedSlider" min="0.1" max="2" step="0.1" value="1">
                 <input type="number" id="speedInput" min="0.1" max="2" step="0.1" value="1">
                 
-                    <label><input type="checkbox" id="showFieldLines" checked> 전기장선 표시</label>
-                    <label><input type="checkbox" id="showForceVectors"> 힘 벡터 표시</label>
+                <label>전기장선 표시:</label>
+                <input type="checkbox" id="showFieldLines" checked>
+                
+                <label>힘 벡터 표시:</label>
+                <input type="checkbox" id="showForceVectors">
                 
                 <button onclick="resetSimulation()">🔄 시뮬레이션 재시작</button>
             </div>
         </div>
         
-            <div class="simulation-area">
         <div class="canvas-container">
             <canvas id="physicsCanvas" width="800" height="600"></canvas>
         </div>
         
-                <div class="data-panel">
-                    <div class="data-item">
-                        <span class="data-value" id="totalForce">0.00</span>
-                        <span class="data-label">총 힘 (N)</span>
+        <div class="info-panel">
+            <h3>📚 물리학 개념 설명</h3>
+            <div class="formula">
+                <strong>쿨롱의 법칙:</strong> F = k × (q₁q₂) / r²
             </div>
-                    <div class="data-item">
-                        <span class="data-value" id="electricField">0.00</span>
-                        <span class="data-label">전기장 (N/C)</span>
+            <div class="formula">
+                <strong>로렌츠 힘:</strong> F = q(E + v × B)
             </div>
-                    <div class="data-item">
-                        <span class="data-value" id="magneticField">0.00</span>
-                        <span class="data-label">자기장 (T)</span>
-                    </div>
-                    <div class="data-item">
-                        <span class="data-value" id="chargeCount">0</span>
-                        <span class="data-label">전하 개수</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="academic-section">
-            <h2>📐 핵심 물리학 공식</h2>
-            <div class="formula-highlight">
-                <strong>쿨롱의 법칙:</strong> F = k × (q₁q₂) / r²<br>
-                <strong>로렌츠 힘:</strong> F = q(E + v × B)<br>
-                <strong>전기장:</strong> E = F/q = k × Q/r²<br>
-                <strong>자기력:</strong> F = qvB sin θ
-            </div>
-        </div>
-        
-        <div class="theory-explanation">
-            <h4>🔬 이론적 배경</h4>
-            <p><strong>쿨롱의 법칙:</strong> 두 전하 사이에 작용하는 힘은 전하량의 곱에 비례하고 거리의 제곱에 반비례합니다. 이는 전기장의 기본 원리로, 전하가 공간에 전기장을 형성하고 다른 전하에 힘을 작용시킵니다.</p>
-            <p><strong>로렌츠 힘:</strong> 전하가 전기장과 자기장이 공존하는 공간에서 받는 힘으로, 전기력과 자기력의 벡터 합입니다. 이는 전자기학의 핵심 개념으로, 전자기 현상을 통합적으로 설명합니다.</p>
-        </div>
-        
-        <div class="experiment-methodology">
-            <h3>🔬 실험 방법론</h3>
-            <ol class="methodology-steps">
-                <li><strong>가설 설정:</strong> 전하의 크기와 거리에 따른 전기력의 변화를 예측합니다.</li>
-                <li><strong>변수 조정:</strong> 전하량, 자기장 세기, 방향 등을 체계적으로 조정합니다.</li>
-                <li><strong>관찰:</strong> 실시간으로 변화하는 전기장선과 힘 벡터를 관찰합니다.</li>
-                <li><strong>데이터 수집:</strong> 총 힘, 전기장, 자기장 등의 정량적 데이터를 수집합니다.</li>
-                <li><strong>분석:</strong> 수집된 데이터를 분석하여 물리학적 패턴을 발견합니다.</li>
-                <li><strong>결론:</strong> 실험 결과를 이론과 비교하여 결론을 도출합니다.</li>
-            </ol>
-        </div>
-        
-        <div class="theory-explanation">
-            <h4>💡 실험 가이드</h4>
             <p><strong>🔴 빨간색:</strong> 양전하 (+), <strong>🔵 파란색:</strong> 음전하 (-)</p>
             <p><strong>💡 노란색 선:</strong> 전기장선, <strong>🔄 화살표:</strong> 힘 벡터</p>
-            <p>캔버스를 클릭하여 전하를 추가하거나, 드래그하여 전하를 이동할 수 있습니다. 다양한 조건에서 실험을 반복하여 전자기학의 원리를 깊이 있게 이해하세요.</p>
-        </div>
-        
-        <div class="footer">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>🔗 관련 연구</h4>
-                    <div class="footer-links">
-                        <a href="index.html">🏠 메인 페이지</a>
-                        <a href="physics2_waves.html">🌊 파동 현상 연구</a>
-                        <a href="physics2_quantum.html">⚛️ 양자역학 연구</a>
-                        <a href="physics2_thermodynamics.html">🔥 열역학 연구</a>
-                    </div>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>📚 참고 문헌</h4>
-                    <div class="footer-links">
-                        <a href="#coulomb">쿨롱의 법칙</a>
-                        <a href="#lorentz">로렌츠 힘</a>
-                        <a href="#electromagnetic">전자기학 이론</a>
-                        <a href="README.md" target="_blank">프로젝트 문서</a>
-                    </div>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>📞 연구팀 연락처</h4>
-                    <div class="footer-links">
-                        <a href="mailto:pistolinkr@icloud.com">📧 pistolinkr@icloud.com</a>
-                        <a href="https://github.com/pistolinkr/worldofphysics" target="_blank">🐙 GitHub Repository</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p><strong>전자기학 연구 시뮬레이션</strong></p>
-                <p>HTML5 Canvas와 JavaScript를 활용한 인터랙티브 물리학 실험</p>
-                <p>&copy; 2025 World of Physics Research Institute. All rights reserved.</p>
-            </div>
+            <p>캔버스를 클릭하여 전하를 추가하거나, 드래그하여 전하를 이동할 수 있습니다.</p>
         </div>
     </div>
 
@@ -590,23 +398,46 @@
                 this.ctx = this.canvas.getContext('2d');
                 this.charges = [];
                 this.fieldLines = [];
-                this.forceVectors = [];
-                this.magneticField = { x: 0, y: 0, strength: 0 };
+                this.magneticField = { strength: 0, direction: 'up' };
                 this.simulationSpeed = 1;
                 this.showFieldLines = true;
                 this.showForceVectors = false;
-                this.isRunning = false;
+                this.isRunning = true;
+                
+                // 새로운 기능들 추가
+                this.particles = [];
+                this.forceVectors = [];
+                this.dataVisualizer = new DataVisualizer();
+                this.time = 0;
+                this.zoom = 1;
+                this.panX = 0;
+                this.panY = 0;
+                this.isDragging = false;
+                this.lastMouseX = 0;
+                this.lastMouseY = 0;
                 
                 this.setupEventListeners();
                 this.setupControls();
-                this.initializeSimulation();
+                this.addDefaultCharges();
+                this.addDefaultParticles();
+                this.animate();
             }
             
             setupEventListeners() {
-                this.canvas.addEventListener('click', (e) => this.handleClick(e));
-                this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
-                this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
-                this.canvas.addEventListener('mouseup', (e) => this.handleMouseUp(e));
+                this.canvas.addEventListener('click', (e) => this.addChargeAtPosition(e));
+                this.canvas.addEventListener('mousedown', (e) => this.startDrag(e));
+                this.canvas.addEventListener('mousemove', (e) => this.drag(e));
+                this.canvas.addEventListener('mouseup', () => this.endDrag());
+                
+                // 줌 기능 추가
+                this.canvas.addEventListener('wheel', (e) => this.handleZoom(e));
+                
+                // 터치 이벤트 (모바일)
+                this.canvas.addEventListener('touchstart', (e) => this.handleTouchStart(e));
+                this.canvas.addEventListener('touchmove', (e) => this.handleTouchMove(e));
+                this.canvas.addEventListener('touchend', (e) => this.handleTouchEnd(e));
+                
+                this.draggedCharge = null;
             }
             
             setupControls() {
@@ -616,45 +447,31 @@
                 
                 chargeSlider.addEventListener('input', (e) => {
                     chargeInput.value = e.target.value;
-                    this.updateCharges();
+                    this.updateChargeDisplay();
                 });
                 
                 chargeInput.addEventListener('input', (e) => {
                     chargeSlider.value = e.target.value;
-                    this.updateCharges();
+                    this.updateChargeDisplay();
                 });
                 
-                // 전하 개수 슬라이더
-                const particleCountSlider = document.getElementById('particleCountSlider');
-                const particleCountInput = document.getElementById('particleCountInput');
-                
-                particleCountSlider.addEventListener('input', (e) => {
-                    particleCountInput.value = e.target.value;
-                    this.updateParticleCount();
-                });
-                
-                particleCountInput.addEventListener('input', (e) => {
-                    particleCountSlider.value = e.target.value;
-                    this.updateParticleCount();
-                });
-                
-                // 자기장 슬라이더
+                // 자기장 설정
                 const magneticFieldSlider = document.getElementById('magneticFieldSlider');
                 const magneticFieldInput = document.getElementById('magneticFieldInput');
                 
                 magneticFieldSlider.addEventListener('input', (e) => {
                     magneticFieldInput.value = e.target.value;
-                    this.updateMagneticField();
+                    this.magneticField.strength = parseFloat(e.target.value);
                 });
                 
                 magneticFieldInput.addEventListener('input', (e) => {
                     magneticFieldSlider.value = e.target.value;
-                    this.updateMagneticField();
+                    this.magneticField.strength = parseFloat(e.target.value);
                 });
                 
                 // 자기장 방향
                 document.getElementById('magneticDirection').addEventListener('change', (e) => {
-                    this.updateMagneticField();
+                    this.magneticField.direction = e.target.value;
                 });
                 
                 // 시뮬레이션 속도
@@ -671,7 +488,7 @@
                     this.simulationSpeed = parseFloat(e.target.value);
                 });
                 
-                // 체크박스
+                // 표시 옵션
                 document.getElementById('showFieldLines').addEventListener('change', (e) => {
                     this.showFieldLines = e.target.checked;
                 });
@@ -681,150 +498,139 @@
                 });
             }
             
-            initializeSimulation() {
-                this.addRandomCharges();
-                this.updateMagneticField();
-                this.startAnimation();
+            addDefaultCharges() {
+                // 기본 전하들 추가
+                this.addCharge(200, 300, 2);
+                this.addCharge(600, 300, -1);
+                this.addCharge(400, 200, 1.5);
             }
             
-            addRandomCharges() {
-                const count = parseInt(document.getElementById('particleCountInput').value);
-                this.charges = [];
-                
-                for (let i = 0; i < count; i++) {
-                    const charge = {
-                        x: Math.random() * (this.canvas.width - 100) + 50,
-                        y: Math.random() * (this.canvas.height - 100) + 50,
-                        q: parseFloat(document.getElementById('chargeInput').value) * (Math.random() > 0.5 ? 1 : -1),
-                        vx: (Math.random() - 0.5) * 2,
-                        vy: (Math.random() - 0.5) * 2,
-                        radius: 8
-                    };
-                    this.charges.push(charge);
+            addDefaultParticles() {
+                // 기본 파티클들 추가
+                for (let i = 0; i < 10; i++) {
+                    const x = Math.random() * this.canvas.width;
+                    const y = Math.random() * this.canvas.height;
+                    const charge = (Math.random() - 0.5) * 2;
+                    this.particles.push(new Particle(x, y, charge));
                 }
-                
-                this.updateDataPanel();
             }
             
-            updateCharges() {
-                const newCharge = parseFloat(document.getElementById('chargeInput').value);
-                this.charges.forEach(charge => {
-                    charge.q = newCharge * (charge.q > 0 ? 1 : -1);
+            addChargeAtPosition(event) {
+                const rect = this.canvas.getBoundingClientRect();
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
+                const charge = parseFloat(document.getElementById('chargeInput').value);
+                this.addCharge(x, y, charge);
+            }
+            
+            addCharge(x, y, charge) {
+                this.charges.push({
+                    x: x,
+                    y: y,
+                    charge: charge,
+                    velocity: { x: 0, y: 0 },
+                    mass: 1
                 });
             }
             
-            updateParticleCount() {
-                this.addRandomCharges();
-            }
-            
-            updateMagneticField() {
-                const strength = parseFloat(document.getElementById('magneticFieldInput').value);
-                const direction = document.getElementById('magneticDirection').value;
+            startDrag(event) {
+                const rect = this.canvas.getBoundingClientRect();
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
                 
-                this.magneticField.strength = strength;
-                
-                switch (direction) {
-                    case 'up':
-                        this.magneticField.x = 0;
-                        this.magneticField.y = -strength;
-                        break;
-                    case 'down':
-                        this.magneticField.x = 0;
-                        this.magneticField.y = strength;
-                        break;
-                    case 'left':
-                        this.magneticField.x = -strength;
-                        this.magneticField.y = 0;
-                        break;
-                    case 'right':
-                        this.magneticField.x = strength;
-                        this.magneticField.y = 0;
-                        break;
+                this.draggedCharge = this.charges.find(charge => {
+                    const distance = Math.sqrt((charge.x - x) ** 2 + (charge.y - y) ** 2);
+                    return distance < 20;
+                });
             }
             
-                this.updateDataPanel();
-            }
-            
-            handleClick(e) {
+            drag(event) {
+                if (this.draggedCharge) {
                     const rect = this.canvas.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const charge = parseFloat(document.getElementById('chargeInput').value);
-                
-                const newCharge = {
-                    x: x,
-                    y: y,
-                    q: charge,
-                    vx: 0,
-                    vy: 0,
-                    radius: 8
-                };
-                
-                this.charges.push(newCharge);
-                this.updateDataPanel();
+                    this.draggedCharge.x = event.clientX - rect.left;
+                    this.draggedCharge.y = event.clientY - rect.top;
+                    this.draggedCharge.velocity = { x: 0, y: 0 };
+                }
             }
             
-            handleMouseDown(e) {
-                // 드래그 시작
+            endDrag() {
+                this.draggedCharge = null;
             }
             
-            handleMouseMove(e) {
-                // 드래그 중
-            }
-            
-            handleMouseUp(e) {
-                // 드래그 종료
-            }
-            
-            calculateForces() {
+            calculateElectricField(x, y) {
+                let Ex = 0, Ey = 0;
                 const k = 8.99e9; // 쿨롱 상수
                 
-                for (let i = 0; i < this.charges.length; i++) {
-                    let fx = 0, fy = 0;
-                    
-                    // 전기력 계산
-                    for (let j = 0; j < this.charges.length; j++) {
-                        if (i !== j) {
-                            const dx = this.charges[j].x - this.charges[i].x;
-                            const dy = this.charges[j].y - this.charges[i].y;
+                for (let charge of this.charges) {
+                    const dx = x - charge.x;
+                    const dy = y - charge.y;
                     const r = Math.sqrt(dx * dx + dy * dy);
                     
-                            if (r > 0) {
-                                const force = k * this.charges[i].q * this.charges[j].q / (r * r);
-                                fx += force * dx / r;
-                                fy += force * dy / r;
+                    if (r > 5) { // 전하 자체에서는 계산하지 않음
+                        const E = k * charge.charge / (r * r);
+                        Ex += E * dx / r;
+                        Ey += E * dy / r;
                     }
                 }
-                    }
                 
-                    // 자기력 계산 (로렌츠 힘)
+                return { x: Ex, y: Ey };
+            }
+            
+            calculateLorentzForce(charge) {
+                const E = this.calculateElectricField(charge.x, charge.y);
+                const v = charge.velocity;
+                
+                // 전기력
+                let Fx = charge.charge * E.x;
+                let Fy = charge.charge * E.y;
+                
+                // 자기력 (로렌츠 힘)
                 if (this.magneticField.strength > 0) {
-                        const vx = this.charges[i].vx;
-                        const vy = this.charges[i].vy;
-                        const q = this.charges[i].q;
-                        
-                        const magneticForceX = q * (vy * this.magneticField.x - vx * this.magneticField.y);
-                        const magneticForceY = q * (vx * this.magneticField.y - vy * this.magneticField.x);
-                        
-                        fx += magneticForceX;
-                        fy += magneticForceY;
+                    let Bx = 0, By = 0;
+                    
+                    switch (this.magneticField.direction) {
+                        case 'up': By = this.magneticField.strength; break;
+                        case 'down': By = -this.magneticField.strength; break;
+                        case 'left': Bx = -this.magneticField.strength; break;
+                        case 'right': Bx = this.magneticField.strength; break;
                     }
                     
-                    // 속도 업데이트 (간단한 운동 방정식)
-                    const mass = 1e-6; // 가상의 질량
-                    this.charges[i].vx += fx / mass * 0.016 * this.simulationSpeed; // 60fps 기준
-                    this.charges[i].vy += fy / mass * 0.016 * this.simulationSpeed;
+                    // F = q(v × B)
+                    const FmagneticX = charge.charge * (v.y * Bx - v.x * By);
+                    const FmagneticY = charge.charge * (v.x * By - v.y * Bx);
+                    
+                    Fx += FmagneticX;
+                    Fy += FmagneticY;
+                }
+                
+                return { x: Fx, y: Fy };
+            }
+            
+            updateCharges() {
+                for (let charge of this.charges) {
+                    const force = this.calculateLorentzForce(charge);
+                    
+                    // F = ma
+                    const ax = force.x / charge.mass;
+                    const ay = force.y / charge.mass;
+                    
+                    // 속도 업데이트
+                    charge.velocity.x += ax * 0.01 * this.simulationSpeed;
+                    charge.velocity.y += ay * 0.01 * this.simulationSpeed;
                     
                     // 위치 업데이트
-                    this.charges[i].x += this.charges[i].vx * this.simulationSpeed;
-                    this.charges[i].y += this.charges[i].vy * this.simulationSpeed;
+                    charge.x += charge.velocity.x * this.simulationSpeed;
+                    charge.y += charge.velocity.y * this.simulationSpeed;
                     
                     // 경계 처리
-                    if (this.charges[i].x < 0 || this.charges[i].x > this.canvas.width) {
-                        this.charges[i].vx *= -0.8;
+                    if (charge.x < 0 || charge.x > this.canvas.width) {
+                        charge.velocity.x *= -0.8;
+                        charge.x = Math.max(0, Math.min(this.canvas.width, charge.x));
                     }
-                    if (this.charges[i].y < 0 || this.charges[i].y > this.canvas.height) {
-                        this.charges[i].vy *= -0.8;
+                    
+                    if (charge.y < 0 || charge.y > this.canvas.height) {
+                        charge.velocity.y *= -0.8;
+                        charge.y = Math.max(0, Math.min(this.canvas.height, charge.y));
                     }
                 }
             }
@@ -832,230 +638,590 @@
             drawFieldLines() {
                 if (!this.showFieldLines) return;
                 
-                const k = 8.99e9;
-                const lineCount = 20;
-                
-                for (let i = 0; i < lineCount; i++) {
-                    for (let j = 0; j < lineCount; j++) {
-                        const x = (i / lineCount) * this.canvas.width;
-                        const y = (j / lineCount) * this.canvas.height;
+                const step = 30;
+                for (let x = step; x < this.canvas.width; x += step) {
+                    for (let y = step; y < this.canvas.height; y += step) {
+                        const field = this.calculateElectricField(x, y);
+                        const magnitude = Math.sqrt(field.x * field.x + field.y * field.y);
                         
-                        let ex = 0, ey = 0;
-                            
-                        // 전기장 계산
-                        for (const charge of this.charges) {
-                            const dx = x - charge.x;
-                            const dy = y - charge.y;
-                            const r = Math.sqrt(dx * dx + dy * dy);
-                            
-                            if (r > 10) {
-                                const field = k * charge.q / (r * r);
-                                ex += field * dx / r;
-                                ey += field * dy / r;
-                            }
-                        }
-                        
-                        const magnitude = Math.sqrt(ex * ex + ey * ey);
                         if (magnitude > 1e6) {
-                            const angle = Math.atan2(ey, ex);
-                            const length = 20;
+                            const angle = Math.atan2(field.y, field.x);
+                            const length = Math.min(20, magnitude / 1e7);
                             
-                            this.ctx.strokeStyle = '#ffd700';
+                            this.ctx.save();
+                            this.ctx.strokeStyle = '#ffffff';
                             this.ctx.lineWidth = 1;
+                            this.ctx.globalAlpha = 0.6;
+                            
                             this.ctx.beginPath();
                             this.ctx.moveTo(x, y);
-                            this.ctx.lineTo(x + Math.cos(angle) * length, y + Math.sin(angle) * length);
+                            this.ctx.lineTo(
+                                x + length * Math.cos(angle),
+                                y + length * Math.sin(angle)
+                            );
                             this.ctx.stroke();
+                            
+                            // 화살표 머리
+                            this.ctx.beginPath();
+                            this.ctx.moveTo(
+                                x + length * Math.cos(angle),
+                                y + length * Math.sin(angle)
+                            );
+                            this.ctx.lineTo(
+                                x + (length - 5) * Math.cos(angle - 0.3),
+                                y + (length - 5) * Math.sin(angle - 0.3)
+                            );
+                            this.ctx.moveTo(
+                                x + length * Math.cos(angle),
+                                y + length * Math.sin(angle)
+                            );
+                            this.ctx.lineTo(
+                                x + (length - 5) * Math.cos(angle + 0.3),
+                                y + (length - 5) * Math.sin(angle + 0.3)
+                            );
+                            this.ctx.stroke();
+                            this.ctx.restore();
                         }
                     }
                 }
             }
             
-            drawCharges() {
-                for (const charge of this.charges) {
-                    this.ctx.beginPath();
-                    this.ctx.arc(charge.x, charge.y, charge.radius, 0, 2 * Math.PI);
-                    
-                    if (charge.q > 0) {
-                        this.ctx.fillStyle = '#ff4757';
-                        this.ctx.shadowColor = '#ff4757';
-                    } else {
-                        this.ctx.fillStyle = '#3742fa';
-                        this.ctx.shadowColor = '#3742fa';
-                    }
-                    
-                    this.ctx.shadowBlur = 10;
-                    this.ctx.fill();
-                    this.ctx.shadowBlur = 0;
-                    
-                    // 전하량 표시
-                    this.ctx.fillStyle = 'white';
-                    this.ctx.font = '12px Arial';
-                    this.ctx.textAlign = 'center';
-                    this.ctx.fillText(charge.q > 0 ? '+' + charge.q.toFixed(1) : charge.q.toFixed(1), 
-                                    charge.x, charge.y + 4);
-                }
-                }
-                
             drawForceVectors() {
                 if (!this.showForceVectors) return;
                 
-                const k = 8.99e9;
-                
-                for (let i = 0; i < this.charges.length; i++) {
-                    let fx = 0, fy = 0;
-                    
-                    // 전기력 계산
-                    for (let j = 0; j < this.charges.length; j++) {
-                        if (i !== j) {
-                            const dx = this.charges[j].x - this.charges[i].x;
-                            const dy = this.charges[j].y - this.charges[i].y;
-                            const r = Math.sqrt(dx * dx + dy * dy);
-                            
-                            if (r > 0) {
-                                const force = k * this.charges[i].q * this.charges[j].q / (r * r);
-                                fx += force * dx / r;
-                                fy += force * dy / r;
-                            }
-                        }
-                    }
-                    
-                    // 자기력 계산
-                    if (this.magneticField.strength > 0) {
-                        const vx = this.charges[i].vx;
-                        const vy = this.charges[i].vy;
-                        const q = this.charges[i].q;
-                        
-                        const magneticForceX = q * (vy * this.magneticField.x - vx * this.magneticField.y);
-                        const magneticForceY = q * (vx * this.magneticField.y - vy * this.magneticField.x);
-                        
-                        fx += magneticForceX;
-                        fy += magneticForceY;
-                }
-                    
-                    const magnitude = Math.sqrt(fx * fx + fy * fy);
-                    if (magnitude > 1e6) {
-                        const scale = 1e-8;
-                        const angle = Math.atan2(fy, fx);
-                        const length = Math.min(magnitude * scale, 50);
-                        
-                        this.ctx.strokeStyle = '#00ff00';
-                        this.ctx.lineWidth = 2;
-                        this.ctx.beginPath();
-                        this.ctx.moveTo(this.charges[i].x, this.charges[i].y);
-                        this.ctx.lineTo(this.charges[i].x + Math.cos(angle) * length, 
-                                      this.charges[i].y + Math.sin(angle) * length);
-                        this.ctx.stroke();
-                        
-                        // 화살표 머리
-                        this.ctx.beginPath();
-                        this.ctx.moveTo(this.charges[i].x + Math.cos(angle) * length, 
-                                      this.charges[i].y + Math.sin(angle) * length);
-                        this.ctx.lineTo(this.charges[i].x + Math.cos(angle) * length - 5 * Math.cos(angle - 0.3), 
-                                      this.charges[i].y + Math.sin(angle) * length - 5 * Math.sin(angle - 0.3));
-                        this.ctx.lineTo(this.charges[i].x + Math.cos(angle) * length - 5 * Math.cos(angle + 0.3), 
-                                      this.charges[i].y + Math.sin(angle) * length - 5 * Math.sin(angle + 0.3));
-                        this.ctx.closePath();
-                        this.ctx.fill();
-                    }
+                // 힘 벡터들 그리기
+                for (let vector of this.forceVectors) {
+                    vector.draw(this.ctx);
                 }
             }
             
-            updateDataPanel() {
-                const k = 8.99e9;
-                let totalForce = 0;
-                let maxElectricField = 0;
-                
-                // 총 힘과 최대 전기장 계산
-                for (let i = 0; i < this.charges.length; i++) {
-                    let fx = 0, fy = 0;
+            drawMagneticField() {
+                if (this.magneticField.strength > 0) {
+                    this.ctx.save();
+                    this.ctx.strokeStyle = '#888888';
+                    this.ctx.lineWidth = 2;
+                    this.ctx.globalAlpha = 0.3;
                     
-                    for (let j = 0; j < this.charges.length; j++) {
-                        if (i !== j) {
-                            const dx = this.charges[j].x - this.charges[i].x;
-                            const dy = this.charges[j].y - this.charges[i].y;
-                            const r = Math.sqrt(dx * dx + dy * dy);
+                    const spacing = 40;
+                    for (let x = 0; x < this.canvas.width; x += spacing) {
+                        for (let y = 0; y < this.canvas.height; y += spacing) {
+                            let angle = 0;
+                            switch (this.magneticField.direction) {
+                                case 'up': angle = Math.PI / 2; break;
+                                case 'down': angle = -Math.PI / 2; break;
+                                case 'left': angle = Math.PI; break;
+                                case 'right': angle = 0; break;
+                            }
                             
-                            if (r > 0) {
-                                const force = k * this.charges[i].q * this.charges[j].q / (r * r);
-                                fx += force * dx / r;
-                                fy += force * dy / r;
-                                
-                                const field = k * this.charges[j].q / (r * r);
-                                maxElectricField = Math.max(maxElectricField, field);
-            }
+                            this.ctx.beginPath();
+                            this.ctx.moveTo(x, y);
+                            this.ctx.lineTo(
+                                x + 15 * Math.cos(angle),
+                                y + 15 * Math.sin(angle)
+                            );
+                            this.ctx.stroke();
                         }
                     }
-                    
-                    totalForce += Math.sqrt(fx * fx + fy * fy);
+                    this.ctx.restore();
                 }
-                
-                document.getElementById('totalForce').textContent = (totalForce / 1e9).toFixed(2);
-                document.getElementById('electricField').textContent = (maxElectricField / 1e6).toFixed(2);
-                document.getElementById('magneticField').textContent = this.magneticField.strength.toFixed(2);
-                document.getElementById('chargeCount').textContent = this.charges.length;
             }
             
             draw() {
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 
+                // 줌과 팬 적용
+                this.ctx.save();
+                this.ctx.translate(this.panX, this.panY);
+                this.ctx.scale(this.zoom, this.zoom);
+                
+                // 자기장 그리기
+                this.drawMagneticField();
+                
+                // 전기장선 그리기
                 this.drawFieldLines();
-                this.drawCharges();
+                
+                // 힘 벡터 그리기
                 this.drawForceVectors();
-            }
-            
-            update() {
-                this.calculateForces();
-                this.updateDataPanel();
+                
+                // 파티클들 그리기
+                for (let particle of this.particles) {
+                    particle.draw(this.ctx);
                 }
+                
+                // 전하들 그리기
+                for (let charge of this.charges) {
+                    this.ctx.save();
+                    
+                    if (charge.charge > 0) {
+                        this.ctx.fillStyle = '#ffffff';
+                        this.ctx.shadowColor = '#ffffff';
+                    } else {
+                        this.ctx.fillStyle = '#888888';
+                        this.ctx.shadowColor = '#888888';
+                    }
+                    
+                    this.ctx.shadowBlur = 10;
+                    this.ctx.beginPath();
+                    this.ctx.arc(charge.x, charge.y, 10, 0, 2 * Math.PI);
+                    this.ctx.fill();
+                    
+                    // 전하량 표시
+                    this.ctx.fillStyle = charge.charge > 0 ? '#000000' : '#ffffff';
+                    this.ctx.font = 'bold 12px Arial';
+                    this.ctx.textAlign = 'center';
+                    this.ctx.shadowBlur = 0;
+                    this.ctx.fillText(
+                        charge.charge > 0 ? '+' + charge.charge.toFixed(1) : charge.charge.toFixed(1),
+                        charge.x,
+                        charge.y + 4
+                    );
+                    
+                    this.ctx.restore();
+                }
+                
+                this.ctx.restore();
+                
+                // 데이터 시각화 그리기 (줌/팬 적용 안함)
+                this.drawDataVisualization();
+            }
             
             animate() {
                 if (this.isRunning) {
-                    this.update();
+                    const dt = 0.016 * this.simulationSpeed; // 약 60fps
+                    this.time += dt;
+                    
+                    this.updateCharges();
+                    this.updateParticles(dt);
+                    this.updateForceVectors(dt);
+                    this.updateDataVisualizer();
                     this.draw();
-                    requestAnimationFrame(() => this.animate());
+                }
+                requestAnimationFrame(() => this.animate());
+            }
+            
+            updateChargeDisplay() {
+                // 현재 선택된 전하량을 표시
+                const charge = parseFloat(document.getElementById('chargeInput').value);
+                // 필요한 경우 추가 로직 구현
+            }
+            
+            updateParticles(dt) {
+                for (let particle of this.particles) {
+                    // 힘 계산
+                    const force = this.calculateLorentzForce(particle);
+                    
+                    // 가속도 계산 (F = ma)
+                    const ax = force.x / particle.mass;
+                    const ay = force.y / particle.mass;
+                    
+                    // 속도 업데이트
+                    particle.vx += ax * dt;
+                    particle.vy += ay * dt;
+                    
+                    // 위치 업데이트
+                    particle.update(dt);
                 }
             }
             
-            startAnimation() {
-                this.isRunning = true;
-                this.animate();
+            updateForceVectors(dt) {
+                this.forceVectors = [];
+                
+                if (this.showForceVectors) {
+                    // 전하들에 대한 힘 벡터
+                    for (let charge of this.charges) {
+                        const force = this.calculateLorentzForce(charge);
+                        this.forceVectors.push(new ForceVector(charge.x, charge.y, force.x, force.y, '#ffffff'));
+                    }
+                    
+                    // 파티클들에 대한 힘 벡터
+                    for (let particle of this.particles) {
+                        const force = this.calculateLorentzForce(particle);
+                        this.forceVectors.push(new ForceVector(particle.x, particle.y, force.x, force.y, '#888888'));
+                    }
+                }
+                
+                // 힘 벡터 업데이트
+                for (let vector of this.forceVectors) {
+                    vector.update(dt);
+                }
             }
             
-            stopAnimation() {
-                this.isRunning = false;
+            updateDataVisualizer() {
+                let totalEnergy = 0;
+                let totalForce = 0;
+                
+                // 에너지와 힘 계산
+                for (let charge of this.charges) {
+                    const force = this.calculateLorentzForce(charge);
+                    totalForce += Math.sqrt(force.x * force.x + force.y * force.y);
+                    totalEnergy += 0.5 * charge.mass * (charge.vx * charge.vx + charge.vy * charge.vy);
+                }
+                
+                for (let particle of this.particles) {
+                    const force = this.calculateLorentzForce(particle);
+                    totalForce += Math.sqrt(force.x * force.x + force.y * force.y);
+                    totalEnergy += 0.5 * particle.mass * (particle.vx * particle.vx + particle.vy * particle.vy);
+                }
+                
+                this.dataVisualizer.addDataPoint(
+                    totalEnergy,
+                    totalForce,
+                    this.charges.length + this.particles.length,
+                    this.time
+                );
+            }
+            
+            handleZoom(e) {
+                e.preventDefault();
+                const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
+                this.zoom = Math.max(0.5, Math.min(3, this.zoom * zoomFactor));
+            }
+            
+            handleTouchStart(e) {
+                e.preventDefault();
+                if (e.touches.length === 1) {
+                    this.isDragging = true;
+                    this.lastMouseX = e.touches[0].clientX;
+                    this.lastMouseY = e.touches[0].clientY;
+                }
+            }
+            
+            handleTouchMove(e) {
+                e.preventDefault();
+                if (this.isDragging && e.touches.length === 1) {
+                    const deltaX = e.touches[0].clientX - this.lastMouseX;
+                    const deltaY = e.touches[0].clientY - this.lastMouseY;
+                    
+                    this.panX += deltaX;
+                    this.panY += deltaY;
+                    
+                    this.lastMouseX = e.touches[0].clientX;
+                    this.lastMouseY = e.touches[0].clientY;
+                }
+            }
+            
+            handleTouchEnd(e) {
+                e.preventDefault();
+                this.isDragging = false;
+            }
+            
+            drawDataVisualization() {
+                // 실시간 그래프 그리기
+                const graphWidth = 200;
+                const graphHeight = 100;
+                const margin = 10;
+                
+                // 에너지 그래프
+                this.dataVisualizer.drawGraph(
+                    this.ctx,
+                    margin,
+                    margin,
+                    graphWidth,
+                    graphHeight,
+                    this.dataVisualizer.data.totalEnergy,
+                    'Energy',
+                    '#ffffff'
+                );
+                
+                // 힘 그래프
+                this.dataVisualizer.drawGraph(
+                    this.ctx,
+                    margin,
+                    margin + graphHeight + 20,
+                    graphWidth,
+                    graphHeight,
+                    this.dataVisualizer.data.totalForce,
+                    'Force',
+                    '#888888'
+                );
+                
+                // 실시간 정보 표시
+                this.ctx.save();
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.font = '12px Arial';
+                this.ctx.fillText(`Time: ${this.time.toFixed(1)}s`, margin, margin + graphHeight * 2 + 40);
+                this.ctx.fillText(`Particles: ${this.particles.length}`, margin, margin + graphHeight * 2 + 55);
+                this.ctx.fillText(`Charges: ${this.charges.length}`, margin, margin + graphHeight * 2 + 70);
+                this.ctx.fillText(`Zoom: ${this.zoom.toFixed(2)}x`, margin, margin + graphHeight * 2 + 85);
+                this.ctx.restore();
+            }
+        }
+        
+        // 파티클 시스템 추가
+        class Particle {
+            constructor(x, y, charge, mass = 1) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 2;
+                this.vy = (Math.random() - 0.5) * 2;
+                this.charge = charge;
+                this.mass = mass;
+                this.radius = Math.abs(charge) * 2 + 3;
+                this.trail = [];
+                this.maxTrailLength = 20;
+            }
+            
+            update(dt) {
+                // 속도 업데이트
+                this.x += this.vx * dt;
+                this.y += this.vy * dt;
+                
+                // 트레일 업데이트
+                this.trail.push({x: this.x, y: this.y});
+                if (this.trail.length > this.maxTrailLength) {
+                    this.trail.shift();
+                }
+                
+                // 경계 처리
+                if (this.x < 0 || this.x > simulation.canvas.width) {
+                    this.vx *= -0.8;
+                    this.x = Math.max(0, Math.min(simulation.canvas.width, this.x));
+                }
+                if (this.y < 0 || this.y > simulation.canvas.height) {
+                    this.vy *= -0.8;
+                    this.y = Math.max(0, Math.min(simulation.canvas.height, this.y));
+                }
+            }
+            
+            draw(ctx) {
+                // 트레일 그리기
+                ctx.save();
+                ctx.globalAlpha = 0.3;
+                for (let i = 0; i < this.trail.length; i++) {
+                    const alpha = i / this.trail.length;
+                    const size = this.radius * alpha;
+                    
+                    if (this.charge > 0) {
+                        ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+                    } else {
+                        ctx.fillStyle = `rgba(128, 128, 128, ${alpha})`;
+                    }
+                    
+                    ctx.beginPath();
+                    ctx.arc(this.trail[i].x, this.trail[i].y, size, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+                ctx.restore();
+                
+                // 파티클 그리기
+                if (this.charge > 0) {
+                    ctx.fillStyle = '#ffffff';
+                    ctx.shadowColor = '#ffffff';
+                } else {
+                    ctx.fillStyle = '#888888';
+                    ctx.shadowColor = '#888888';
+                }
+                
+                ctx.shadowBlur = 10;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // 전하량 표시
+                ctx.fillStyle = this.charge > 0 ? '#000000' : '#ffffff';
+                ctx.font = 'bold 10px Arial';
+                ctx.textAlign = 'center';
+                ctx.shadowBlur = 0;
+                ctx.fillText(
+                    this.charge > 0 ? '+' + this.charge.toFixed(1) : this.charge.toFixed(1),
+                    this.x,
+                    this.y + 3
+                );
+            }
+        }
+        
+        // 힘 벡터 애니메이션 클래스
+        class ForceVector {
+            constructor(x, y, fx, fy, color = '#ffffff') {
+                this.x = x;
+                this.y = y;
+                this.fx = fx;
+                this.fy = fy;
+                this.color = color;
+                this.arrowLength = 30;
+                this.animationTime = 0;
+            }
+            
+            update(dt) {
+                this.animationTime += dt;
+            }
+            
+            draw(ctx) {
+                const magnitude = Math.sqrt(this.fx * this.fx + this.fy * this.fy);
+                if (magnitude < 0.1) return;
+                
+                const angle = Math.atan2(this.fy, this.fx);
+                const length = Math.min(this.arrowLength, magnitude * 0.1);
+                
+                // 애니메이션 효과
+                const pulse = 1 + 0.2 * Math.sin(this.animationTime * 5);
+                
+                ctx.save();
+                ctx.strokeStyle = this.color;
+                ctx.lineWidth = 2 * pulse;
+                ctx.setLineDash([5, 5]);
+                
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(
+                    this.x + length * Math.cos(angle),
+                    this.y + length * Math.sin(angle)
+                );
+                ctx.stroke();
+                
+                // 화살표 머리
+                ctx.setLineDash([]);
+                ctx.beginPath();
+                ctx.moveTo(
+                    this.x + length * Math.cos(angle),
+                    this.y + length * Math.sin(angle)
+                );
+                ctx.lineTo(
+                    this.x + (length - 8) * Math.cos(angle - 0.3),
+                    this.y + (length - 8) * Math.sin(angle - 0.3)
+                );
+                ctx.moveTo(
+                    this.x + length * Math.cos(angle),
+                    this.y + length * Math.sin(angle)
+                );
+                ctx.lineTo(
+                    this.x + (length - 8) * Math.cos(angle + 0.3),
+                    this.y + (length - 8) * Math.sin(angle + 0.3)
+                );
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
+        
+        // 실시간 데이터 시각화 클래스
+        class DataVisualizer {
+            constructor() {
+                this.data = {
+                    totalEnergy: [],
+                    totalForce: [],
+                    particleCount: [],
+                    time: []
+                };
+                this.maxDataPoints = 100;
+            }
+            
+            addDataPoint(energy, force, count, time) {
+                this.data.totalEnergy.push(energy);
+                this.data.totalForce.push(force);
+                this.data.particleCount.push(count);
+                this.data.time.push(time);
+                
+                if (this.data.totalEnergy.length > this.maxDataPoints) {
+                    this.data.totalEnergy.shift();
+                    this.data.totalForce.shift();
+                    this.data.particleCount.shift();
+                    this.data.time.shift();
+                }
+            }
+            
+            drawGraph(ctx, x, y, width, height, data, title, color = '#ffffff') {
+                if (data.length < 2) return;
+                
+                ctx.save();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+                ctx.fillStyle = color;
+                ctx.font = '12px Arial';
+                ctx.fillText(title, x, y - 5);
+                
+                const maxValue = Math.max(...data);
+                const minValue = Math.min(...data);
+                const range = maxValue - minValue || 1;
+                
+                ctx.beginPath();
+                for (let i = 0; i < data.length; i++) {
+                    const graphX = x + (i / (data.length - 1)) * width;
+                    const graphY = y + height - ((data[i] - minValue) / range) * height;
+                    
+                    if (i === 0) {
+                        ctx.moveTo(graphX, graphY);
+                    } else {
+                        ctx.lineTo(graphX, graphY);
+                    }
+                }
+                ctx.stroke();
+                ctx.restore();
             }
         }
         
         // 전역 함수들
-        let simulation;
-        
         function addRandomCharges() {
-            simulation.addRandomCharges();
+            const count = parseInt(document.getElementById('particleCountInput').value);
+            for (let i = 0; i < count; i++) {
+                const x = Math.random() * 700 + 50;
+                const y = Math.random() * 500 + 50;
+                const charge = (Math.random() - 0.5) * 4; // -2에서 2 사이
+                simulation.addCharge(x, y, charge);
+            }
         }
         
         function clearCharges() {
             simulation.charges = [];
-            simulation.updateDataPanel();
         }
         
         function toggleMagneticField() {
-            const currentStrength = parseFloat(document.getElementById('magneticFieldInput').value);
-            const newStrength = currentStrength > 0 ? 0 : 1;
-            document.getElementById('magneticFieldSlider').value = newStrength;
-            document.getElementById('magneticFieldInput').value = newStrength;
-            simulation.updateMagneticField();
+            if (simulation.magneticField.strength > 0) {
+                simulation.magneticField.strength = 0;
+                document.getElementById('magneticFieldSlider').value = 0;
+                document.getElementById('magneticFieldInput').value = 0;
+            } else {
+                simulation.magneticField.strength = 1;
+                document.getElementById('magneticFieldSlider').value = 1;
+                document.getElementById('magneticFieldInput').value = 1;
+            }
         }
         
         function resetSimulation() {
-            simulation.stopAnimation();
-            simulation = new PhysicsSimulation();
+            simulation.charges = [];
+            simulation.addDefaultCharges();
         }
         
-        // 페이지 로드 시 시뮬레이션 시작
-        window.addEventListener('load', () => {
-            simulation = new PhysicsSimulation();
-        });
+        // 시뮬레이션 시작
+        const simulation = new PhysicsSimulation();
     </script>
+    
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>🔗 빠른 링크</h4>
+                <div class="footer-links">
+                    <a href="index.html">🏠 메인 페이지</a>
+                    <a href="physics2_waves.html" target="_blank">🌊 파동</a>
+                    <a href="physics2_quantum.html" target="_blank">⚛️ 양자역학</a>
+                    <a href="physics2_thermodynamics.html" target="_blank">🔥 열역학</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>📖 솔루션 & 사용방법</h4>
+                <div class="footer-links">
+                    <a href="index.html#usage-guide">사용 가이드</a>
+                    <a href="index.html#learning-objectives">학습 목표</a>
+                    <a href="index.html#formulas">핵심 공식</a>
+                    <a href="README.md" target="_blank">프로젝트 문서</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>📞 연락처</h4>
+                <div class="footer-links">
+                    <a href="mailto:pistolinkr@icloud.com">📧 pistolinkr@icloud.com</a>
+                    <a href="https://github.com/pistolinkr/worldofphysics" target="_blank">🐙 GitHub Repository</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>고등학교 물리학2 교육용 프로그래밍 프로젝트</p>
+            <p>HTML5 Canvas와 JavaScript를 활용한 인터랙티브 시뮬레이션</p>
+            <p>&copy; 2025 World of Physics. All rights reserved.</p>
+        </div>
+    </div>
 </body>
 </html> 

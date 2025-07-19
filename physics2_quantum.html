@@ -3,76 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>양자역학 연구 시뮬레이션 - 물리학2</title>
+    <title>물리학2 - 양자역학 시뮬레이션</title>
     <style>
         body {
-            font-family: 'Georgia', 'Times New Roman', serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #000000;
             min-height: 100vh;
-            color: #333;
-        }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: #ffffff;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            border: 1px solid #e0e0e0;
-        }
-        
-        .header-section {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
             color: white;
         }
         
-        h1 {
-            margin-bottom: 15px;
-            font-size: 3em;
-            font-weight: 300;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            letter-spacing: 2px;
-        }
-        
-        .subtitle {
-            font-size: 1.3em;
-            margin-bottom: 20px;
-            opacity: 0.95;
-            font-weight: 300;
-        }
-        
-        .research-metrics {
-            display: flex;
-            justify-content: space-around;
-            background: rgba(255,255,255,0.1);
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #111111;
+            border-radius: 15px;
             padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
+            border: 1px solid #333333;
         }
         
-        .metric-item {
+        h1 {
             text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
         
-        .metric-number {
-            font-size: 2em;
-            font-weight: bold;
-            display: block;
-        }
-        
-        .metric-label {
-            font-size: 0.9em;
-            opacity: 0.9;
-        }
-        
-        /* 기존 스타일 유지하면서 학회지 스타일 적용 */
         .controls {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -81,80 +38,90 @@
         }
         
         .control-panel {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 25px;
-            border: 1px solid #e9ecef;
+            background: #222222;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #444444;
         }
         
         .control-panel h3 {
             margin-top: 0;
-            color: #2c3e50;
-            font-size: 1.4em;
-            border-bottom: 2px solid #667eea;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+            color: #ffffff;
         }
         
         label {
             display: block;
-            margin: 12px 0 6px 0;
-            font-weight: 600;
-            color: #495057;
+            margin: 10px 0 5px 0;
+            font-weight: bold;
         }
         
         input[type="range"], input[type="number"], select {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 8px;
-            background: white;
-            color: #495057;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            background: #333333;
+            color: white;
             margin-bottom: 10px;
-            font-size: 0.95em;
         }
         
         input[type="number"] {
-            width: calc(100% - 20px);
+            width: calc(100% - 16px);
         }
         
         button {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
+            background: #ffffff;
+            color: #000000;
             border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
+            padding: 10px 20px;
+            border-radius: 5px;
             cursor: pointer;
             margin: 5px;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            font-size: 0.9em;
+            transition: transform 0.2s;
         }
         
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            transform: scale(1.05);
         }
         
         .canvas-container {
             text-align: center;
             margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #444444;
+            border-radius: 10px;
+            background: #000000;
         }
         
         #quantumCanvas {
-            border: 2px solid #667eea;
-            border-radius: 12px;
-            background: #000000;
-            cursor: crosshair;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .zoom-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 10;
+        }
+        
+        .zoom-controls button {
+            display: block;
+            margin: 5px 0;
+            padding: 5px 10px;
+            font-size: 12px;
         }
         
         .data-panel {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
+            background: #222222;
+            padding: 15px;
+            border-radius: 10px;
             margin-top: 20px;
-            border: 1px solid #e9ecef;
+            border: 1px solid #444444;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
@@ -162,234 +129,116 @@
         
         .data-item {
             text-align: center;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
+            padding: 10px;
+            background: #333333;
+            border-radius: 5px;
         }
         
         .data-value {
-            font-size: 1.8em;
+            font-size: 1.5em;
             font-weight: bold;
-            color: #2c3e50;
-            display: block;
+            color: #ffffff;
         }
         
         .data-label {
             font-size: 0.9em;
-            color: #6c757d;
-            margin-top: 5px;
+            color: #cccccc;
         }
         
-        .academic-section {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 30px;
-            margin: 30px 0;
-            border: 1px solid #e9ecef;
-        }
-        
-        .academic-section h2 {
-            color: #2c3e50;
-            margin-bottom: 25px;
-            font-size: 2em;
-            text-align: center;
-            font-weight: 600;
-        }
-        
-        .formula-highlight {
-            background: #2c3e50;
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            font-family: 'Courier New', monospace;
-            text-align: center;
-            margin: 20px 0;
-            border: 1px solid #34495e;
-            font-size: 1.1em;
-            line-height: 1.8;
-        }
-        
-        .research-publication {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            margin: 30px 0;
-            border: 1px solid #e9ecef;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        
-        .research-publication h3 {
-            color: #2c3e50;
-            margin-bottom: 25px;
-            font-size: 1.6em;
-            text-align: center;
-            border-bottom: 2px solid #667eea;
-            padding-bottom: 15px;
-        }
-        
-        .publication-metrics {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-        
-        .metric-card {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 12px;
-            border-left: 5px solid #667eea;
-            text-align: center;
-        }
-        
-        .metric-card h4 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-        
-        .metric-data {
-            margin-bottom: 15px;
-        }
-        
-        .metric-value {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #667eea;
-            display: block;
-        }
-        
-        .metric-label {
-            font-size: 0.9em;
-            color: #6c757d;
-            margin-top: 5px;
-        }
-        
-        .research-citations {
-            background: #f8f9fa;
-            padding: 30px;
-            border-radius: 15px;
-            margin: 30px 0;
-            border: 1px solid #e9ecef;
-        }
-        
-        .research-citations h3 {
-            color: #2c3e50;
-            margin-bottom: 25px;
-            font-size: 1.6em;
-            text-align: center;
-            border-bottom: 2px solid #667eea;
-            padding-bottom: 15px;
-        }
-        
-        .citation-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .citation-item {
-            background: white;
-            padding: 20px;
+        .info-panel {
+            background: #222222;
+            padding: 15px;
             border-radius: 10px;
-            border-left: 4px solid #667eea;
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
+            margin-top: 20px;
+            border: 1px solid #444444;
         }
         
-        .citation-number {
-            background: #667eea;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.9em;
-            flex-shrink: 0;
+        .info-panel h3 {
+            color: #ffffff;
+            margin-top: 0;
         }
         
-        .citation-text {
-            color: #495057;
-            line-height: 1.6;
-            font-style: italic;
-        }
-        
-        .theory-explanation {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            margin: 20px 0;
-            border-left: 5px solid #667eea;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        
-        .theory-explanation h4 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-        }
-        
-        .theory-explanation p {
-            color: #555;
-            line-height: 1.7;
+        .formula {
+            background: #333333;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
             margin: 10px 0;
+            text-align: center;
         }
         
+        .quantum-type {
+            display: inline-block;
+            margin: 5px;
+            padding: 5px 10px;
+            background: #444444;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .quantum-type.active {
+            background: #ffffff;
+            color: black;
+        }
+        
+        .probability-display {
+            background: #333333;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        /* Footer Styles */
         .footer {
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 2px solid #e9ecef;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            opacity: 0.9;
         }
         
         .footer-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
             margin-bottom: 30px;
         }
         
         .footer-section h4 {
-            color: #2c3e50;
+            color: #fff;
             margin-bottom: 15px;
-            font-size: 1.2em;
-            border-bottom: 2px solid #667eea;
+            font-size: 1.1em;
+            border-bottom: 2px solid #555;
             padding-bottom: 8px;
         }
         
         .footer-links {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
         
         .footer-links a {
-            color: #555;
+            color: #ccc;
             text-decoration: none;
-            padding: 8px 0;
-            transition: all 0.3s ease;
+            padding: 5px 0;
+            transition: color 0.3s ease;
             display: flex;
             align-items: center;
             gap: 8px;
-            border-radius: 5px;
-            padding-left: 10px;
         }
         
         .footer-links a:hover {
-            color: #667eea;
-            background: #f8f9fa;
+            color: #fff;
             transform: translateX(5px);
         }
         
         .footer-bottom {
             text-align: center;
             padding-top: 20px;
-            border-top: 1px solid #e9ecef;
-            color: #6c757d;
+            border-top: 1px solid #444;
+            color: #888;
         }
         
         .footer-bottom p {
@@ -397,92 +246,201 @@
             font-size: 0.9em;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
             .container {
-                padding: 20px;
-                margin: 10px;
+                padding: 5px;
+                margin: 0;
             }
             
             h1 {
-                font-size: 2.2em;
-            }
-            
-            .subtitle {
-                font-size: 1.1em;
-            }
-            
-            .research-metrics {
-                flex-direction: column;
-                gap: 15px;
+                font-size: 1.3em;
+                margin-bottom: 15px;
             }
             
             .controls {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important;
+                gap: 8px;
             }
             
             .control-panel {
-                padding: 20px;
+                padding: 8px;
+                font-size: 0.85em;
+                margin-bottom: 8px;
+            }
+            
+            .control-panel h3 {
+                font-size: 1em;
+                margin-bottom: 8px;
+            }
+            
+            .quantum-type {
+                font-size: 0.8em;
+                padding: 4px 6px;
+                margin: 2px;
+            }
+            
+            label {
+                font-size: 0.8em;
+                margin: 5px 0 3px 0;
+            }
+            
+            input[type="range"], input[type="number"], select {
+                font-size: 0.9em;
+                padding: 6px 8px;
+                margin-bottom: 6px;
+            }
+            
+            button {
+                font-size: 0.85em;
+                padding: 6px 10px;
+                margin: 3px;
+            }
+            
+            .canvas-container {
+                margin: 8px 0;
+            }
+            
+            #quantumCanvas {
+                width: 100% !important;
+                height: 250px !important;
+                max-width: 100vw;
+                min-width: 0;
+            }
+            
+            .zoom-controls {
+                position: static;
+                margin-top: 8px;
+                text-align: center;
+            }
+            
+            .zoom-controls button {
+                font-size: 0.8em;
+                padding: 4px 8px;
+                margin: 2px;
             }
             
             .data-panel {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+                margin: 8px 0;
             }
             
-            .research-publication {
-                padding: 20px;
+            .data-item {
+                padding: 6px;
+                font-size: 0.8em;
             }
             
-            .publication-metrics {
-                grid-template-columns: 1fr;
-                gap: 20px;
+            .data-value {
+                font-size: 1.1em;
+                font-weight: bold;
             }
             
-            .research-citations {
-                padding: 20px;
+            .data-label {
+                font-size: 0.7em;
             }
             
-            .citation-item {
-                flex-direction: column;
-                gap: 15px;
+            .probability-display {
+                padding: 8px;
+                font-size: 0.85em;
+                margin: 8px 0;
             }
             
-            .citation-number {
-                align-self: flex-start;
+            .probability-display h4 {
+                font-size: 1em;
+                margin-bottom: 6px;
+            }
+            
+            .probability-display p {
+                font-size: 0.8em;
+                margin: 3px 0;
+            }
+            
+            .info-panel {
+                padding: 8px;
+                font-size: 0.85em;
+                margin-top: 8px;
+            }
+            
+            .info-panel h3 {
+                font-size: 1em;
+                margin-bottom: 8px;
+            }
+            
+            .formula {
+                font-size: 0.8em;
+                padding: 6px;
+                margin: 5px 0;
+            }
+            
+            .info-panel p {
+                font-size: 0.8em;
+                margin: 4px 0;
             }
             
             .footer-content {
                 grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .footer-section h4 {
+                font-size: 0.9em;
+            }
+            
+            .footer-links a {
+                font-size: 0.8em;
+                padding: 3px 0;
+            }
+            
+            .footer-bottom p {
+                font-size: 0.75em;
+            }
+        }
+        
+        /* 매우 작은 화면 (320px 이하) */
+        @media (max-width: 320px) {
+            .container {
+                padding: 3px;
+            }
+            
+            h1 {
+                font-size: 1.1em;
+            }
+            
+            .control-panel {
+                padding: 6px;
+                font-size: 0.8em;
+            }
+            
+            .quantum-type {
+                font-size: 0.75em;
+                padding: 3px 5px;
+            }
+            
+            button {
+                font-size: 0.8em;
+                padding: 5px 8px;
+            }
+            
+            #quantumCanvas {
+                height: 200px !important;
+            }
+            
+            .data-panel {
+                grid-template-columns: 1fr;
+                gap: 4px;
+            }
+            
+            .data-item {
+                padding: 4px;
+                font-size: 0.75em;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header-section">
-            <h1>⚛️ 양자역학 연구 시뮬레이션</h1>
-            <p class="subtitle">입자-파동 이중성과 터널링 효과를 통한 양자역학적 현상의 실험적 탐구</p>
-            
-            <div class="research-metrics">
-                <div class="metric-item">
-                    <span class="metric-number">18+</span>
-                    <span class="metric-label">실험 가능</span>
-                </div>
-                <div class="metric-item">
-                    <span class="metric-number">99.7%</span>
-                    <span class="metric-label">정확도</span>
-                </div>
-                <div class="metric-item">
-                    <span class="metric-number">양자</span>
-                    <span class="metric-label">시뮬레이션</span>
-                </div>
-                <div class="metric-item">
-                    <span class="metric-number">확률</span>
-                    <span class="metric-label">분석</span>
-                </div>
-            </div>
-        </div>
+        <h1>⚛️ 물리학2 - 양자역학 시뮬레이션 ⚛️</h1>
         
-        <!-- 기존 컨트롤 패널들 유지 -->
         <div class="controls">
             <div class="control-panel">
                 <h3>🔬 양자 현상 선택</h3>
@@ -556,25 +514,25 @@
                 <button onclick="zoomOut()">🔍-</button>
                 <button onclick="resetZoom()">🏠</button>
             </div>
-            <canvas id="quantumCanvas" width="800" height="600"></canvas>
+            <canvas id="quantumCanvas" width="800" height="400"></canvas>
         </div>
         
         <div class="data-panel">
             <div class="data-item">
-                <span class="data-value" id="deBroglieWavelength">0</span>
-                <span class="data-label">드브로이 파장 (nm)</span>
+                <div class="data-value" id="deBroglieWavelength">0</div>
+                <div class="data-label">드브로이 파장 (nm)</div>
             </div>
             <div class="data-item">
-                <span class="data-value" id="tunnelingProbability">0.00</span>
-                <span class="data-label">터널링 확률</span>
+                <div class="data-value" id="tunnelingProbability">0%</div>
+                <div class="data-label">터널링 확률</div>
             </div>
             <div class="data-item">
-                <span class="data-value" id="positionUncertainty">0</span>
-                <span class="data-label">위치 불확정성 (nm)</span>
+                <div class="data-value" id="positionUncertainty">0</div>
+                <div class="data-label">위치 불확정성 (nm)</div>
             </div>
             <div class="data-item">
-                <span class="data-value" id="momentumUncertainty">0</span>
-                <span class="data-label">운동량 불확정성 (eV/c)</span>
+                <div class="data-value" id="momentumUncertainty">0</div>
+                <div class="data-label">운동량 불확정성 (eV/c)</div>
             </div>
         </div>
         
@@ -585,125 +543,24 @@
             <p>양자 상태: <span id="quantumState">기본 상태</span></p>
         </div>
         
-        <div class="academic-section">
-            <h2>📐 핵심 물리학 공식</h2>
-            <div class="formula-highlight">
-                <strong>불확정성 원리:</strong> ΔxΔp ≥ ℏ/2<br>
-                <strong>드브로이 파장:</strong> λ = h/p<br>
-                <strong>터널링 확률:</strong> T ≈ e^(-2a√(2m(V-E))/ℏ)<br>
+        <div class="info-panel">
+            <h3>📚 양자역학 개념 설명</h3>
+            <div class="formula">
+                <strong>불확정성 원리:</strong> ΔxΔp ≥ ℏ/2
+            </div>
+            <div class="formula">
+                <strong>드브로이 파장:</strong> λ = h/p = h/√(2mE)
+            </div>
+            <div class="formula">
+                <strong>터널링 확률:</strong> T ≈ e^(-2a√(2m(V-E))/ℏ)
+            </div>
+            <div class="formula">
                 <strong>슈뢰딩거 방정식:</strong> iℏ∂ψ/∂t = Ĥψ
             </div>
-        </div>
-        
-        <div class="theory-explanation">
-            <h4>🔬 이론적 배경</h4>
-            <p><strong>입자-파동 이중성:</strong> 모든 물질은 입자와 파동의 성질을 동시에 가집니다. 전자나 광자와 같은 미시적 입자들은 특정 조건에서 파동처럼 간섭과 회절을 보이기도 하고, 입자처럼 개별적으로 측정되기도 합니다. 이는 드브로이의 물질파 가설에서 시작되어 현대 양자역학의 기초가 되었습니다.</p>
-            <p><strong>터널링 효과:</strong> 고전역학적으로는 불가능한 에너지 장벽을 양자역학적 입자가 확률적으로 통과할 수 있는 현상입니다. 이는 파동함수의 확산과 관련이 있으며, 반도체 소자, 원자핵 융합, 스캐닝 터널링 현미경 등 다양한 분야에서 응용됩니다.</p>
-            <p><strong>불확정성 원리:</strong> 위치와 운동량을 동시에 정확히 측정할 수 없다는 하이젠베르크의 원리로, 양자역학의 근본적인 특성입니다. 이는 측정 과정에서 발생하는 불가피한 교란이 아니라, 자연의 근본적인 특성을 반영합니다.</p>
-            <p><strong>양자 중첩:</strong> 양자계가 여러 상태의 선형 결합으로 존재할 수 있는 현상으로, 측정 전까지는 확정된 상태가 아닙니다. 이는 양자 컴퓨팅과 양자 암호화의 기초가 되는 개념입니다.</p>
-        </div>
-        
-        <div class="research-publication">
-            <h3>📚 양자역학 연구 논문 스타일</h3>
-            <div class="publication-metrics">
-                <div class="metric-card">
-                    <h4>⚛️ 양자 상태 분석</h4>
-                    <div class="metric-data">
-                        <span class="metric-value" id="quantumStates">0</span>
-                        <span class="metric-label">관찰된 상태</span>
-                    </div>
-                    <div class="metric-data">
-                        <span class="metric-value" id="superpositionCount">0</span>
-                        <span class="metric-label">중첩 상태</span>
-                    </div>
-                </div>
-                <div class="metric-card">
-                    <h4>🎯 측정 정확도</h4>
-                    <div class="metric-data">
-                        <span class="metric-value" id="measurementAccuracy">99.7%</span>
-                        <span class="metric-label">측정 정확도</span>
-                    </div>
-                    <div class="metric-data">
-                        <span class="metric-value" id="uncertaintyLevel">최소</span>
-                        <span class="metric-label">불확정성 수준</span>
-                    </div>
-                </div>
-                <div class="metric-card">
-                    <h4>📈 연구 성과</h4>
-                    <div class="metric-data">
-                        <span class="metric-value" id="tunnelingSuccess">0%</span>
-                        <span class="metric-label">터널링 성공률</span>
-                    </div>
-                    <div class="metric-data">
-                        <span class="metric-value" id="quantumCoherence">높음</span>
-                        <span class="metric-label">양자 간섭성</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="research-citations">
-            <h3>📖 양자역학 참고 문헌</h3>
-            <div class="citation-list">
-                <div class="citation-item">
-                    <span class="citation-number">[1]</span>
-                    <span class="citation-text">Griffiths, D. J. (2018). Introduction to Quantum Mechanics. Cambridge University Press.</span>
-                </div>
-                <div class="citation-item">
-                    <span class="citation-number">[2]</span>
-                    <span class="citation-text">Shankar, R. (2012). Principles of Quantum Mechanics. Springer Science & Business Media.</span>
-                </div>
-                <div class="citation-item">
-                    <span class="citation-number">[3]</span>
-                    <span class="citation-text">Sakurai, J. J., & Napolitano, J. (2020). Modern Quantum Mechanics. Cambridge University Press.</span>
-                </div>
-                <div class="citation-item">
-                    <span class="citation-number">[4]</span>
-                    <span class="citation-text">Cohen-Tannoudji, C., Diu, B., & Laloë, F. (2019). Quantum Mechanics. Wiley-VCH.</span>
-                </div>
-                <div class="citation-item">
-                    <span class="citation-number">[5]</span>
-                    <span class="citation-text">Feynman, R. P., Leighton, R. B., & Sands, M. (2011). The Feynman Lectures on Physics, Vol. 3. Basic Books.</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="footer">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>🔗 관련 연구</h4>
-                    <div class="footer-links">
-                        <a href="index.html">🏠 메인 페이지</a>
-                        <a href="physics2_electromagnetism.html">⚡ 전자기학 연구</a>
-                        <a href="physics2_waves.html">🌊 파동 현상 연구</a>
-                        <a href="physics2_thermodynamics.html">🔥 열역학 연구</a>
-                    </div>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>📚 참고 문헌</h4>
-                    <div class="footer-links">
-                        <a href="#wave-particle">입자-파동 이중성</a>
-                        <a href="#tunneling">터널링 효과</a>
-                        <a href="#uncertainty">불확정성 원리</a>
-                        <a href="README.md" target="_blank">프로젝트 문서</a>
-                    </div>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>📞 연구팀 연락처</h4>
-                    <div class="footer-links">
-                        <a href="mailto:pistolinkr@icloud.com">📧 pistolinkr@icloud.com</a>
-                        <a href="https://github.com/pistolinkr/worldofphysics" target="_blank">🐙 GitHub Repository</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p><strong>양자역학 연구 시뮬레이션</strong></p>
-                <p>HTML5 Canvas와 JavaScript를 활용한 인터랙티브 물리학 실험</p>
-                <p>&copy; 2025 World of Physics Research Institute. All rights reserved.</p>
-            </div>
+            <p><strong>🔴 빨간색:</strong> 파동함수, <strong>🟡 노란색:</strong> 확률밀도, <strong>🔵 파란색:</strong> 퍼텐셜 에너지</p>
+            <p><strong>입자-파동 이중성:</strong> 모든 입자는 파동의 성질도 가지고 있음</p>
+            <p><strong>터널링 효과:</strong> 고전역학적으로 불가능한 에너지 장벽을 통과하는 현상</p>
+            <p><strong>불확정성 원리:</strong> 위치와 운동량을 동시에 정확히 측정할 수 없음</p>
         </div>
     </div>
 
